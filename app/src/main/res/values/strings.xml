@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">unifind</string>
+    <string name="title_home">Beranda</string>
+    <string name="title_dashboard">Pelacakan</string>
+    <string name="title_notifications">Notifikasi</string>
+    <string name="title_person">Akun</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
