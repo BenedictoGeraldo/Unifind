@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#005B92"
+    tools:context=".LoginActivity">
+    
+    <androidx.cardview.widget.CardView
+        android:layout_width="327dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        app:cardBackgroundColor="#005B92"
+        app:cardElevation="0dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="top|center_horizontal">
+
+            <ImageView
+                android:id="@+id/Logo"
+                android:layout_width="170dp"
+                android:layout_height="150dp"
+                android:src="@drawable/logo"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="Login"
+                android:gravity="center_horizontal|center_vertical"
+                android:textSize="24sp"
+                android:textColor="#FCFCD4"
+                android:fontFamily="@font/plusjakartasans_bold"
+                />
+
+            <TextView
+                android:id="@+id/NIM"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="NIM"
+                android:gravity="center_vertical"
+                android:textSize="16dp"
+                android:textColor="#FCFCD4"
+                android:fontFamily="@font/plusjakartasans_bold"
+                />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/frame_10">
+
+                <EditText
+                    android:id="@+id/NimField"
+                    android:layout_width="271dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:hint="Masukkan NIM"
+                    android:gravity="center_vertical"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:textColorHint="#9BA1A2"
+                    android:layout_centerVertical="true"
+                    android:background="@android:color/transparent"
+                    android:inputType="text"
+                    android:fontFamily="@font/plusjakartasans_regular" />
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/nim_inactive"/>
+
+            </RelativeLayout>
+            
+            <RelativeLayout
+                android:id="@+id/nimErr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/login_warning"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/warning_vector"/>
+
+                <TextView
+                    android:id="@+id/txtNimErr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="33dp"
+                    android:text="Field ini wajib diisi!"
+                    android:textColor="#FFFFFF"
+                    android:textSize="10sp"
+                    android:fontFamily="@font/plusjakartasans_regular"/>
+                
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/Password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Password"
+                android:gravity="center_vertical"
+                android:textSize="16dp"
+                android:textColor="#FCFCD4"
+                android:fontFamily="@font/plusjakartasans_bold"
+                />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/frame_10">
+
+                <EditText
+                    android:id="@+id/PasswordField"
+                    android:layout_width="271dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:hint="Masukkan Password"
+                    android:gravity="center_vertical"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:textColorHint="#9BA1A2"
+                    android:layout_centerVertical="true"
+                    android:background="@android:color/transparent"
+                    android:inputType="textPassword"
+                    android:fontFamily="@font/plusjakartasans_regular" />
+
+                <ImageView
+                    android:id="@+id/eye_icon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/eye_icon"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/passErr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/login_warning"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/warning_vector"/>
+
+                <TextView
+                    android:id="@+id/txtPassErr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="33dp"
+                    android:text="Field ini wajib diisi!"
+                    android:textColor="#FFFFFF"
+                    android:textSize="10sp"
+                    android:fontFamily="@font/plusjakartasans_regular"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/btnLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                android:background="@drawable/login_button"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="Login"
+                    android:textColor="#E6F4F1"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/plusjakartasans_bold"/>
+
+            </RelativeLayout>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>
