@@ -1,6 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Nama -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nama*"
+            android:textColor="#1E3A8A"
+            android:textStyle="bold"
+            android:layout_marginTop="12dp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Abdul Hakim Darassalam"
+            android:padding="12dp"
+            android:inputType="textPersonName"/>
+
+        <!-- NIM -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="NIM*"
+            android:textColor="#1E3A8A"
+            android:textStyle="bold"
+            android:layout_marginTop="12dp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="2210512047"
+            android:padding="12dp"
+            android:inputType="number"/>
+
+        <!--Nama Barang-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nama Barang*"
+            android:textColor="#1E3A8A"
+            android:textStyle="bold"
+            android:layout_marginTop="12dp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Contoh: Laptop"
+            android:padding="12dp"
+            android:inputType="number"/>
+
+        <!--Kategori-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Kategori*"
+            android:textColor="#1E3A8A"
+            android:textStyle="bold"
+            android:layout_marginTop="12dp"/>
+        
+<!--        <Spinner-->
+<!--            android:id="@+id/categorySpinner"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:padding="12dp"-->
+<!--            android:prompt="Pilih Kategori"/>-->
+
+        <!--Deskripsi Barang-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Deskripsi Barang*"
+            android:textColor="#1E3A8A"
+            android:textStyle="bold"
+            android:layout_marginTop="12dp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:hint="Contoh: Laptop"
+            android:padding="12dp"
+            android:inputType="number"/>
+
+        <!--Tanggal Penemuan-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tanggal Penemuan*"
+            android:textColor="#1E3A8A"
+            android:textStyle="bold"
+            android:layout_marginTop="12dp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Contoh: 19 April 2025"
+            android:padding="12dp"
+            android:inputType="date"/>
+
+        <!--Waktu Penemuan-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Waktu Penemuan*"
+            android:textColor="#1E3A8A"
+            android:textStyle="bold"
+            android:layout_marginTop="12dp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Contoh: 10.15"
+            android:padding="12dp"
+            android:inputType="date"/>
+
+        <!--Foto Barang-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Foto Barang*"
+            android:textColor="#1E3A8A"
+            android:textStyle="bold"
+            android:layout_marginTop="12dp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:hint="//nanti diisi yee"
+            android:padding="12dp"
+            android:inputType="text"/>
+
+        <!--Lokasi Penemuan-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lokasi Penemuan*"
+            android:textColor="#1E3A8A"
+            android:textStyle="bold"
+            android:layout_marginTop="12dp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Selasar FIK"
+            android:padding="12dp"
+            android:inputType="text"/>
+
+        <!--Button Hubungkan-->
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="#005B92"
+            android:textStyle="bold"
+            android:text="Buat Postingan" />
+    </LinearLayout>
 
 </ScrollView>
