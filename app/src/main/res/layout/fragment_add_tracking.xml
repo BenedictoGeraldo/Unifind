@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.dashboard.AddTrackingFragment">
+
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:elevation="4dp"
+        android:paddingVertical="16dp"
+        android:paddingHorizontal="24dp">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/back_icon"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/back"
+            android:layout_marginStart="12dp"
+            android:text="Tambah Barang"
+            android:textSize="18sp"
+            android:textColor="#005B92"
+            android:fontFamily="@font/plusjakartasans_bold"
+            android:lineSpacingExtra="1sp"
+            android:gravity="center_vertical"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="27dp">
+        
+        <TextView
+            android:id="@+id/namaBarang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nama Barang"
+            style="@style/SubHeaderTextBlue"
+            android:lineSpacingExtra="3sp"
+            android:gravity="center_vertical"/>
+
+        <RelativeLayout
+            android:id="@+id/field_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/namaBarang"
+            android:layout_marginTop="4dp"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="7dp"
+            android:background="@drawable/input_rectangle">
+
+            <EditText
+                android:id="@+id/edtNama"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Contoh: tas ransel"
+                style="@style/InputTeks"
+                android:layout_centerVertical="true"
+                android:background="@android:color/transparent"
+                android:inputType="text" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/kategoriBarang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/field_1"
+            android:layout_marginTop="16dp"
+            android:text="Kategori Barang"
+            style="@style/SubHeaderTextBlue"
+            android:lineSpacingExtra="3sp"
+            android:gravity="center_vertical"/>
+
+        <RelativeLayout
+            android:id="@+id/field_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/kategoriBarang"
+            android:layout_marginTop="4dp"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="7dp"
+            android:background="@drawable/input_rectangle">
+
+            <Spinner
+                android:id="@+id/spinner_kategori_barang"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="Pilih kategori barang"
+                android:background="@android:color/transparent"
+                android:layout_centerVertical="true" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/deskripsiBarang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/field_2"
+            android:layout_marginTop="16dp"
+            android:text="Deskripsi Barang"
+            style="@style/SubHeaderTextBlue"
+            android:lineSpacingExtra="3sp"
+            android:gravity="center_vertical"/>
+
+        <RelativeLayout
+            android:id="@+id/field_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/deskripsiBarang"
+            android:layout_marginTop="4dp"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="7dp"
+            android:background="@drawable/input_rectangle_description">
+
+            <EditText
+                android:id="@+id/edtDeskripsi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Apa saja ciri-ciri barang?"
+                style="@style/InputTeks"
+                android:background="@android:color/transparent"
+                android:inputType="text" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/fotoBarang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/field_3"
+            android:layout_marginTop="16dp"
+            android:text="Foto Barang"
+            style="@style/SubHeaderTextBlue"
+            android:lineSpacingExtra="3sp"
+            android:gravity="center_vertical"/>
+
+        <RelativeLayout
+            android:id="@+id/field_4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fotoBarang"
+            android:layout_marginTop="4dp"
+            android:padding="10dp"
+            android:background="@drawable/input_rectangle_image">
+
+            <ImageView
+                android:id="@+id/unggah_bg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/unggah_foto"/>
+
+            <ImageView
+                android:id="@+id/iv_foto_barang"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerHorizontal="true"
+                android:src="@android:drawable/ic_menu_gallery"
+                android:scaleType="centerCrop"
+                android:visibility="gone"
+                android:contentDescription="Foto barang yang diunggah" />
+
+            <RelativeLayout
+                android:id="@+id/btn_upload_foto"
+                android:layout_width="95dp"
+                android:layout_height="25dp"
+                android:layout_below="@id/unggah_bg"
+                android:layout_marginTop="8dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/input_rectangle"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Unggah Foto"
+                    android:layout_centerInParent="true"
+                    style="@style/ButtonTeks"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/idPerangkat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/field_4"
+            android:layout_marginTop="16dp"
+            android:text="ID Perangkat"
+            style="@style/SubHeaderTextBlue"
+            android:lineSpacingExtra="3sp"
+            android:gravity="center_vertical"/>
+
+        <RelativeLayout
+            android:id="@+id/field_5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/idPerangkat"
+            android:layout_marginTop="4dp"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="7dp"
+            android:background="@drawable/input_rectangle">
+
+            <EditText
+                android:id="@+id/edtId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Contoh : TM-AX45-9843"
+                style="@style/InputTeks"
+                android:layout_centerVertical="true"
+                android:background="@android:color/transparent"
+                android:inputType="text" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/btnHubungkan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/field_5"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="51dp"
+            android:background="@drawable/lacak_button"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Hubungkan"
+                android:textColor="#F3FBF8"
+                android:textSize="12sp"
+                android:fontFamily="@font/plusjakartasans_bold"/>
+
+        </RelativeLayout>
+        
+    </RelativeLayout>
+
+</RelativeLayout>

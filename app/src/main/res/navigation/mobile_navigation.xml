@@ -15,7 +15,13 @@
         android:id="@+id/navigation_dashboard"
         android:name="com.androidprojek.unifind.ui.dashboard.DashboardFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_dashboard">
+        <action
+            android:id="@+id/action_navigation_pelacakan_to_addTrackingFragment"
+            app:destination="@id/add_tracking_fragment"
+            app:popUpTo="@id/navigation_dashboard"
+            app:popUpToInclusive="false" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_notifications"
@@ -28,4 +34,10 @@
         android:name="com.androidprojek.unifind.ui.profile.ProfileFragment"
         android:label="Profile"
         tools:layout="@layout/fragment_profile" />
+
+    <!-- Fragment untuk form tambah pelacakan -->
+    <fragment
+        android:id="@+id/add_tracking_fragment"
+        android:name="com.androidprojek.unifind.ui.dashboard.AddTrackingFragment"
+        android:label="Tambah Pelacakan" />
 </navigation>

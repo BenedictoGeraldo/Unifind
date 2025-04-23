@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="kategori_barang">
+        <item>Pilih kategori barang</item>
+        <item>Tas</item>
+        <item>Elektronik</item>
+        <item>Pakaian</item>
+        <item>Lainnya</item>
+    </string-array>
+</resources>

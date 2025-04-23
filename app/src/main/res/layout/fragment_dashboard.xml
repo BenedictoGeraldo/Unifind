@@ -6,17 +6,98 @@
     android:layout_height="match_parent"
     tools:context=".ui.dashboard.DashboardFragment">
 
-    <TextView
-        android:id="@+id/text_dashboard"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:elevation="4dp"
+            android:paddingVertical="16dp"
+            android:paddingHorizontal="24dp">
+
+            <TextView
+                android:id="@+id/text_dashboard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Pelacakan"
+                android:textSize="18sp"
+                android:textColor="#005B92"
+                android:fontFamily="@font/plusjakartasans_bold"
+                android:lineSpacingExtra="1sp"
+                android:gravity="center_horizontal|center_vertical"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <ImageView
+                android:id="@+id/empty_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/empty_pelacakan"/>
+
+            <TextView
+                android:id="@+id/empty_teks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="44px"
+                android:textSize="18sp"
+                android:textColor="#005B92"
+                android:fontFamily="@font/plusjakartasans_bold"
+                android:layout_below="@id/empty_image"
+                android:layout_centerHorizontal="true"
+                android:text="Pelacakan Kosong!"
+                android:lineSpacingExtra="1sp"
+                android:gravity="center_horizontal|center_vertical" />
+
+            <TextView
+                android:id="@+id/belum_ada_p"
+                android:layout_width="260dp"
+                android:layout_height="36dp"
+                android:layout_marginTop="8px"
+                android:textSize="12sp"
+                android:textColor="#1F2B2D"
+                android:fontFamily="@font/plusjakartasans_regular"
+                android:layout_below="@id/empty_teks"
+                android:text="Belum ada perangkat terhubung. Tambahkan untuk mulai lacak barang"
+                android:lineSpacingExtra="3sp"
+                android:gravity="center_horizontal|center_vertical"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/btnLacak"
+            android:layout_width="186dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/empty"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="36dp"
+            android:background="@drawable/lacak_button"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Tambah Barang"
+                android:textColor="#E6F4F1"
+                android:textSize="16sp"
+                android:fontFamily="@font/plusjakartasans_bold"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

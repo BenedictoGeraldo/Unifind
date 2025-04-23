@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.androidprojek.unifind.R
 import com.androidprojek.unifind.databinding.FragmentDashboardBinding
 
 class DashboardFragment : Fragment() {
@@ -33,6 +35,15 @@ class DashboardFragment : Fragment() {
             textView.text = it
         }
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Tambahkan listener untuk tombol Tambah Barang
+        binding.btnLacak.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_pelacakan_to_addTrackingFragment)
+        }
     }
 
     override fun onDestroyView() {

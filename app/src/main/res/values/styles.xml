@@ -1,0 +1,26 @@
+<!-- res/values/styles.xml -->
+<resources>
+    <style name="HeaderText">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">#005B92</item>
+        <item name="android:fontFamily">@font/plusjakartasans_bold</item>
+    </style>
+
+    <style name="SubHeaderTextBlue">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">#005B92</item>
+        <item name="android:fontFamily">@font/plusjakartasans_bold</item>
+    </style>
+
+    <style name="ButtonTeks">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">#005B92</item>
+        <item name="android:fontFamily">@font/plusjakartasans_regular</item>
+    </style>
+
+    <style name="InputTeks">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textColorHint">#9BA1A2</item>
+    </style>
+</resources>
