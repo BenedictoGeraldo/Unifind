@@ -1,6 +1,8 @@
 package com.androidprojek.unifind.ui.dashboard
 
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +15,11 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.androidprojek.unifind.R
 import com.androidprojek.unifind.databinding.FragmentAddTrackingBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import java.util.UUID
 
 class AddTrackingFragment : Fragment() {
 
@@ -20,6 +27,11 @@ class AddTrackingFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var selectedCategory: String? = null
+    private var imageUri: Uri? = null
+
+    private val db = FirebaseFirestore.getInstance()
+    private val storage = FirebaseStorage.getInstance()
+    private val auth = FirebaseAuth.getInstance()
 
     // Launcher untuk memilih gambar dari galeri
     private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
@@ -45,6 +57,14 @@ class AddTrackingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        if (auth.currentUser == null) {
+            Log.d("Auth", "User not logged in")
+            findNavController().navigate(R.id.navigation_home)
+            return
+        } else {
+            Log.d("Auth", "User logged in with UID: ${auth.currentUser?.uid}")
+        }
+
         // Atur navigasi kembali pada tombol Back
         binding.back.setOnClickListener {
             findNavController().navigateUp() // Kembali ke halaman sebelumnya (menu Pelacakan)
@@ -69,21 +89,59 @@ class AddTrackingFragment : Fragment() {
             // Validasi field wajib
             if (namaBarang.isEmpty() || kategoriBarang == null || deskripsiBarang.isEmpty()) {
                 Toast.makeText(context, "Lengkapi semua field wajib", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // Jika ada gambar, unggah ke Firebase Storage
+            if (imageUri != null) {
+                val storageRef = storage.reference.child("tracking_images/${UUID.randomUUID()}.jpg")
+                storageRef.putFile(imageUri!!)
+                    .addOnSuccessListener {
+                        // Dapatkan URL gambar setelah berhasil diunggah
+                        storageRef.downloadUrl.addOnSuccessListener { uri ->
+                            val imageUrl = uri.toString()
+                            // Simpan data ke Firestore
+                            saveToFirestore(namaBarang, kategoriBarang, deskripsiBarang, idPerangkat, imageUrl)
+                        }
+                    }
+                    .addOnFailureListener { e ->
+                        Toast.makeText(context, "Gagal mengunggah gambar: ${e.message}", Toast.LENGTH_SHORT).show()
+                    }
             } else {
-//                // Simpan data (misalnya ke database atau server IoT)
-//                setFragmentResult(
-//                    "tracking_result",
-//                    bundleOf(
-//                        "name" to namaBarang,
-//                        "category" to kategoriBarang,
-//                        "description" to deskripsiBarang,
-//                        "device_id" to idPerangkat
-//                    )
-//                )
-                // Kembali ke halaman Pelacakan
-                findNavController().navigateUp()
+                // Simpan data ke Firestore tanpa gambar
+                saveToFirestore(namaBarang, kategoriBarang, deskripsiBarang, idPerangkat, null)
             }
         }
+    }
+
+    private fun saveToFirestore(
+        namaBarang: String,
+        kategoriBarang: String,
+        deskripsiBarang: String,
+        idPerangkat: String,
+        imageUrl: String?
+    ) {
+        // Buat data yang akan disimpan
+        val trackingData = hashMapOf(
+            "namaBarang" to namaBarang,
+            "kategoriBarang" to kategoriBarang,
+            "deskripsiBarang" to deskripsiBarang,
+            "idPerangkat" to idPerangkat,
+            "imageUrl" to imageUrl,
+            "timestamp" to System.currentTimeMillis()
+        )
+
+        // Simpan ke Firestore di collection "trackings"
+        db.collection("trackings")
+            .add(trackingData)
+            .addOnSuccessListener { documentReference ->
+                Toast.makeText(context, "Data pelacakan berhasil disimpan!", Toast.LENGTH_SHORT).show()
+                // Kembali ke halaman sebelumnya (menu Pelacakan)
+                findNavController().navigateUp()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(context, "Gagal menyimpan data: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
     }
 
     private fun setupSpinner() {

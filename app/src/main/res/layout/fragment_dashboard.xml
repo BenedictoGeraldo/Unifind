@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,80 +7,83 @@
     tools:context=".ui.dashboard.DashboardFragment">
 
     <RelativeLayout
+        android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:elevation="4dp"
+        android:paddingVertical="16dp"
+        android:paddingHorizontal="24dp">
 
-        <RelativeLayout
-            android:id="@+id/header"
+        <TextView
+            android:id="@+id/text_dashboard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            android:elevation="4dp"
-            android:paddingVertical="16dp"
-            android:paddingHorizontal="24dp">
+            android:layout_centerInParent="true"
+            android:text="Pelacakan"
+            android:textSize="18sp"
+            android:textColor="#005B92"
+            android:fontFamily="@font/plusjakartasans_bold"
+            android:lineSpacingExtra="1sp"
+            android:gravity="center_horizontal|center_vertical"/>
+    </RelativeLayout>
 
-            <TextView
-                android:id="@+id/text_dashboard"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="Pelacakan"
-                android:textSize="18sp"
-                android:textColor="#005B92"
-                android:fontFamily="@font/plusjakartasans_bold"
-                android:lineSpacingExtra="1sp"
-                android:gravity="center_horizontal|center_vertical"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_trackings"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/header"
+        android:layout_above="@id/fabTambah"
+        android:layout_marginTop="16dp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        tools:listitem="@layout/item_tracking" />
 
-        </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
 
-        <RelativeLayout
-            android:id="@+id/empty"
+        <ImageView
+            android:id="@+id/empty_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/empty_pelacakan"/>
 
-            <ImageView
-                android:id="@+id/empty_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:src="@drawable/empty_pelacakan"/>
+        <TextView
+            android:id="@+id/empty_teks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="44px"
+            android:textSize="18sp"
+            android:textColor="#005B92"
+            android:fontFamily="@font/plusjakartasans_bold"
+            android:layout_below="@id/empty_image"
+            android:layout_centerHorizontal="true"
+            android:text="Pelacakan Kosong!"
+            android:lineSpacingExtra="1sp"
+            android:gravity="center_horizontal|center_vertical" />
 
-            <TextView
-                android:id="@+id/empty_teks"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="44px"
-                android:textSize="18sp"
-                android:textColor="#005B92"
-                android:fontFamily="@font/plusjakartasans_bold"
-                android:layout_below="@id/empty_image"
-                android:layout_centerHorizontal="true"
-                android:text="Pelacakan Kosong!"
-                android:lineSpacingExtra="1sp"
-                android:gravity="center_horizontal|center_vertical" />
-
-            <TextView
-                android:id="@+id/belum_ada_p"
-                android:layout_width="260dp"
-                android:layout_height="36dp"
-                android:layout_marginTop="8px"
-                android:textSize="12sp"
-                android:textColor="#1F2B2D"
-                android:fontFamily="@font/plusjakartasans_regular"
-                android:layout_below="@id/empty_teks"
-                android:text="Belum ada perangkat terhubung. Tambahkan untuk mulai lacak barang"
-                android:lineSpacingExtra="3sp"
-                android:gravity="center_horizontal|center_vertical"
-                />
-
-        </RelativeLayout>
+        <TextView
+            android:id="@+id/belum_ada_p"
+            android:layout_width="260dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="8px"
+            android:textSize="12sp"
+            android:textColor="#1F2B2D"
+            android:fontFamily="@font/plusjakartasans_regular"
+            android:layout_below="@id/empty_teks"
+            android:text="Belum ada perangkat terhubung. Tambahkan untuk mulai lacak barang"
+            android:lineSpacingExtra="3sp"
+            android:gravity="center_horizontal|center_vertical" />
 
         <RelativeLayout
             android:id="@+id/btnLacak"
             android:layout_width="186dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/empty"
+            android:layout_below="@id/belum_ada_p"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="36dp"
             android:background="@drawable/lacak_button"
@@ -96,8 +99,16 @@
                 android:textColor="#E6F4F1"
                 android:textSize="16sp"
                 android:fontFamily="@font/plusjakartasans_bold"/>
-
         </RelativeLayout>
-
     </RelativeLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabTambah"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="Tambah Barang"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="96dp"
+        android:layout_marginEnd="16dp"/>
+</RelativeLayout>
