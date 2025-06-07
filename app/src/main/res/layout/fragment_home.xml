@@ -19,6 +19,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:tabIndicatorColor="@color/biru_tab"
         app:tabSelectedTextColor="@color/biru_tab"
+        app:tabIndicatorFullWidth="false"
         app:tabTextAppearance="@style/customtab"
         app:tabTextColor="@color/abu_tab" />
 
