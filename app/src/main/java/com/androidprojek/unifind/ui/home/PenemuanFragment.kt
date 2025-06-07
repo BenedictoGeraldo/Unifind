@@ -1,57 +1,89 @@
 package com.androidprojek.unifind.ui.home
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
-import android.view.*
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.androidprojek.unifind.adapter.BarangAdapter
+import com.androidprojek.unifind.R
+// DIUBAH: Mengimpor adapter baru Anda
+import com.androidprojek.unifind.adapter.PenemuanAdapter
 import com.androidprojek.unifind.databinding.FragmentPenemuanBinding
-import com.androidprojek.unifind.model.BarangModel
-import com.androidprojek.unifind.ui.FormBarangActivity
+// DIUBAH: Mengimpor model baru Anda
+import com.androidprojek.unifind.model.PenemuanModel
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 
 class PenemuanFragment : Fragment() {
 
     private var _binding: FragmentPenemuanBinding? = null
     private val binding get() = _binding!!
 
-    private val listBarang = mutableListOf<BarangModel>()
-    private lateinit var adapter: BarangAdapter
+    // DIUBAH: Deklarasi variabel untuk adapter dan list baru Anda
+    private lateinit var penemuanAdapter: PenemuanAdapter
+    private val listPenemuan = mutableListOf<PenemuanModel>()
 
-    companion object {
-        const val REQUEST_TAMBAH = 101
-    }
+    private val db = FirebaseFirestore.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentPenemuanBinding.inflate(inflater, container, false)
-
-        adapter = BarangAdapter(listBarang)
-        binding.rvBarang.layoutManager = LinearLayoutManager(context)
-        binding.rvBarang.adapter = adapter
-
-        binding.fabTambah.setOnClickListener {
-            startActivityForResult(
-                Intent(requireContext(), FormBarangActivity::class.java),
-                REQUEST_TAMBAH
-            )
-        }
-
         return binding.root
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_TAMBAH && resultCode == Activity.RESULT_OK && data != null) {
-            val barang = data.getParcelableExtra<BarangModel>("DATA_BARANG")
-            barang?.let {
-                listBarang.add(it)
-                adapter.notifyItemInserted(listBarang.size - 1)
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setupRecyclerView()
+
+        binding.fabTambah.setOnClickListener {
+            // Navigasi ini sudah benar, mengarah ke form Anda
+            findNavController().navigate(R.id.action_penemuan_to_penemuanPostForm)
         }
+
+        // Fungsi ini akan mengambil data dari Firestore
+        listenToFirestoreChanges()
+    }
+
+    private fun setupRecyclerView() {
+        // DIUBAH: Menggunakan PenemuanAdapter yang baru
+        penemuanAdapter = PenemuanAdapter(listPenemuan)
+        binding.rvBarang.apply {
+            layoutManager = LinearLayoutManager(context)
+            // DIUBAH: Menetapkan adapter baru ke RecyclerView
+            adapter = penemuanAdapter
+        }
+    }
+
+    private fun listenToFirestoreChanges() {
+        // Mengambil data dari koleksi "form_penemuan" dan mengurutkannya berdasarkan yang terbaru
+        db.collection("form_penemuan")
+            .orderBy("timestamp", Query.Direction.DESCENDING)
+            .addSnapshotListener { snapshots, error ->
+                if (error != null) {
+                    Log.w("PenemuanFragment", "Listen failed.", error)
+                    return@addSnapshotListener
+                }
+
+                if (snapshots != null) {
+                    // DIUBAH: Mengosongkan dan mengisi listPenemuan
+                    listPenemuan.clear()
+                    for (doc in snapshots.documents) {
+                        // DIUBAH: Mengonversi data Firestore menjadi objek PenemuanModel
+                        val penemuan = doc.toObject(PenemuanModel::class.java)
+                        if (penemuan != null) {
+                            listPenemuan.add(penemuan)
+                        }
+                    }
+                    // DIUBAH: Memberi tahu penemuanAdapter bahwa datanya telah berubah
+                    penemuanAdapter.notifyDataSetChanged()
+                }
+            }
     }
 
     override fun onDestroyView() {

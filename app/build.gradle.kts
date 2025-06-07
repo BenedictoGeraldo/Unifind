@@ -65,5 +65,13 @@ dependencies {
     implementation ("com.google.android.gms:play-services-maps:18.2.0")
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+    // Untuk CardView dan MaterialButton
+    implementation("com.google.android.material:material:1.12.0")
+    // Untuk CircleImageView
+    implementation("de.hdodenhof:circleimageview:3.1.0")
+    // Untuk ViewPager2
+    implementation("androidx.viewpager2:viewpager2:1.1.0")
+    // Untuk Dots Indicator
+    implementation("com.tbuonomo:dotsindicator:5.0")
 
 }

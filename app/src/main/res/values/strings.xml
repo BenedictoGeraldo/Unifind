@@ -15,4 +15,16 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+
+    <!--Penemuan post form-->
+    <string name="form_title">Buat Postingan Penemuan</string>
+    <string name="label_nama">Nama <font color='#FF0000'>*</font></string>
+    <string name="label_nim">NIM <font color='#FF0000'>*</font></string>
+    <string name="label_nama_barang">Nama Barang <font color='#FF0000'>*</font></string>
+    <string name="label_kategori">Kategori <font color='#FF0000'>*</font></string>
+    <string name="label_deskripsi">Deskripsi Barang <font color='#FF0000'>*</font></string>
+    <string name="label_tanggal">Tanggal Penemuan <font color='#FF0000'>*</font></string>
+    <string name="label_waktu">Waktu Penemuan <font color='#FF0000'>*</font></string>
+    <string name="label_lokasi">Lokasi Penemuan <font color='#FF0000'>*</font></string>
+    <string name="label_foto">Foto Barang <font color='#FF0000'>*</font></string>
 </resources>

@@ -5,11 +5,6 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_home">
 
-    <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.androidprojek.unifind.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
@@ -40,4 +35,31 @@
         android:id="@+id/add_tracking_fragment"
         android:name="com.androidprojek.unifind.ui.dashboard.AddTrackingFragment"
         android:label="Tambah Pelacakan" />
+
+    <!--Penemuan form -->
+    <fragment
+        android:id="@+id/penemuan_post_form"
+        android:name="com.androidprojek.unifind.ui.home.penemuan_post_form"
+        android:label="Lapor Barang Ditemukan"
+        tools:layout="@layout/penemuan_post_form" />
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.androidprojek.unifind.ui.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home">
+
+        <!-- PINDAHKAN ACTION KE SINI -->
+        <action
+            android:id="@+id/action_penemuan_to_penemuanPostForm"
+            app:destination="@id/penemuan_post_form" />
+
+    </fragment>
+
+    <!-- Penemuan Fragment tidak perlu punya action lagi -->
+    <fragment
+        android:id="@+id/navigation_penemuan"
+        android:name="com.androidprojek.unifind.ui.home.PenemuanFragment"
+        android:label="Penemuan"
+        tools:layout="@layout/fragment_penemuan" />
 </navigation>

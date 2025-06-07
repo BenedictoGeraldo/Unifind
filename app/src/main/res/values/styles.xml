@@ -23,4 +23,11 @@
         <item name="android:textColor">@color/black</item>
         <item name="android:textColorHint">#9BA1A2</item>
     </style>
+
+    <!--lower case tab penemuan dan pencarian-->
+    <style name="customtab" parent="TextAppearance.Design.Tab">
+        <item name="android:textAllCaps">false</item>
+        <item name="textAllCaps">false</item>
+    </style>
+
 </resources>

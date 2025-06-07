@@ -7,4 +7,11 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="red">#B9132C</color>
+    <color name="grey_400">#BDBDBD</color>
+    <color name="blue_500">#2196F3</color>
+    <color name="oren_tua">#E18B00</color>
+    <color name="biru_laut">#2F90BD</color>
+    <color name="biru_tab">#005B92</color>
+    <color name="abu_tab">#6A7173</color>
 </resources>

@@ -17,9 +17,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tabIndicatorColor="@color/purple_500"
-        app:tabSelectedTextColor="@color/black"
-        app:tabTextColor="@color/teal_200" />
+        app:tabIndicatorColor="@color/biru_tab"
+        app:tabSelectedTextColor="@color/biru_tab"
+        app:tabTextAppearance="@style/customtab"
+        app:tabTextColor="@color/abu_tab" />
 
     <!-- ViewPager2 -->
     <androidx.viewpager2.widget.ViewPager2
