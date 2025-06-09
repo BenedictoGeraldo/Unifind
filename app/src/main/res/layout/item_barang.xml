@@ -1,51 +1,252 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    card_view:cardCornerRadius="12dp"
-    card_view:cardElevation="4dp">
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp"
+    app:strokeWidth="0dp">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="8dp">
+        android:padding="16dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/ivFotoProfil"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/baseline_person_outline_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvNamaPelapor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/ivToggleDetail"
+            app:layout_constraintStart_toEndOf="@+id/ivFotoProfil"
+            app:layout_constraintTop_toTopOf="@+id/ivFotoProfil"
+            tools:text="Nama Pelapor" />
+
+        <TextView
+            android:id="@+id/tvNimPelapor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@+id/tvNamaPelapor"
+            app:layout_constraintStart_toStartOf="@+id/tvNamaPelapor"
+            app:layout_constraintTop_toBottomOf="@+id/tvNamaPelapor"
+            tools:text="NIM Pelapor" />
 
         <ImageView
-            android:id="@+id/ivBarang"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_launcher_background" />
+            android:id="@+id/ivToggleDetail"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_arrow_down"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="Toggle Detail"/>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPagerGambarBarang"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/ivFotoProfil"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+            android:id="@+id/dotsIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:dotsColor="@android:color/darker_gray"
+            app:selectedDotColor="@color/blue_500"
+            app:dotsSize="8dp"
+            app:dotsSpacing="4dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/viewPagerGambarBarang"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/tvNamaBarang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            app:layout_constraintTop_toBottomOf="@+id/dotsIndicator"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Nama Barang Hilang" />
+
+        <TextView
+            android:id="@+id/tvStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/status_background"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="4dp"
+            android:textColor="@color/red"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="@+id/tvNamaBarang"
+            app:layout_constraintBottom_toBottomOf="@+id/tvNamaBarang"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Dalam Pencarian" />
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:id="@+id/layoutDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingStart="8dp">
+            android:visibility="gone"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/tvStatus"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:visibility="visible">
 
-            <TextView
-                android:id="@+id/tvNamaBarang"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Nama Barang"
-                android:textStyle="bold"
-                android:textSize="16sp" />
+                android:layout_marginBottom="8dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Kategori"
+                    android:layout_alignParentStart="true"/>
+                <TextView
+                    android:id="@+id/tvDetailKategori"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black"
+                    android:layout_alignParentEnd="true"
+                    tools:text="Elektronik"/>
+            </RelativeLayout>
 
-            <TextView
-                android:id="@+id/tvTanggal"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Tanggal Hilang" />
+                android:layout_marginBottom="8dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deskripsi"
+                    android:layout_alignParentStart="true"/>
+                <TextView
+                    android:id="@+id/tvDetailDeskripsi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="100dp"
+                    android:gravity="end"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black"
+                    android:layout_alignParentEnd="true"
+                    tools:text="Deskripsi panjang barang..."/>
+            </RelativeLayout>
 
-            <TextView
-                android:id="@+id/tvLokasi"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Lokasi Hilang" />
+                android:layout_marginBottom="8dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tanggal Hilang"
+                    android:layout_alignParentStart="true"/>
+                <TextView
+                    android:id="@+id/tvDetailTanggal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black"
+                    android:layout_alignParentEnd="true"
+                    tools:text="08-06-2025"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Waktu Hilang"
+                    android:layout_alignParentStart="true"/>
+                <TextView
+                    android:id="@+id/tvDetailWaktu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black"
+                    android:layout_alignParentEnd="true"
+                    tools:text="13:00 WIB"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lokasi Terakhir Terlihat"
+                    android:layout_alignParentStart="true"/>
+                <TextView
+                    android:id="@+id/tvDetailLokasi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black"
+                    android:layout_alignParentEnd="true"
+                    tools:text="Kantin UPNVJ"/>
+            </RelativeLayout>
         </LinearLayout>
-    </LinearLayout>
-</androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:id="@+id/layoutTombolAksi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/layoutDetail"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDetail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:cornerRadius="8dp"
+                android:text="Hubungi Pelapor"
+                android:backgroundTint="@android:color/darker_gray"
+                android:textAllCaps="false"/>
+
+            <View
+                android:layout_width="16dp"
+                android:layout_height="0dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAksiUtama"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:cornerRadius="8dp"
+                android:text="Saya Menemukan Ini"
+                android:backgroundTint="@color/blue_500"
+                android:textAllCaps="false"/>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>
