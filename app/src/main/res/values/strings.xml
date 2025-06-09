@@ -27,4 +27,11 @@
     <string name="label_waktu">Waktu Penemuan <font color='#FF0000'>*</font></string>
     <string name="label_lokasi">Lokasi Penemuan <font color='#FF0000'>*</font></string>
     <string name="label_foto">Foto Barang <font color='#FF0000'>*</font></string>
+
+    <!--Form Pencarian-->
+    <string name="title_form_kehilangan">Lapor Kehilangan Barang</string>
+    <string name="label_tanggal_hilang">Tanggal Hilang <font color='#FF0000'>*</font></string>
+    <string name="label_waktu_hilang">Waktu Hilang <font color='#FF0000'>*</font></string>
+    <string name="label_lokasi_hilang">Lokasi Terakhir Dilihat <font color='#FF0000'>*</font></string>
+    <string name="button_laporkan_kehilangan">Laporkan Kehilangan</string>
 </resources>
