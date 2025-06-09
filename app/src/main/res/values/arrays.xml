@@ -2,9 +2,19 @@
 <resources>
     <string-array name="kategori_barang">
         <item>Pilih kategori barang</item>
+        <item>Laptop</item>
+        <item>Handphone</item>
+        <item>Charger</item>
+        <item>Jam Tangan</item>
+        <item>Alat Tulis</item>
+        <item>Kartu Identitas</item>
+        <item>Jaket/Hoddie</item>
+        <item>Helm</item>
+        <item>Kacamata</item>
+        <item>Dompet</item>
+        <item>Botol Minum / Bekal</item>
+        <item>Kunci</item>
         <item>Tas</item>
-        <item>Elektronik</item>
-        <item>Pakaian</item>
-        <item>Lainnya</item>
+
     </string-array>
 </resources>

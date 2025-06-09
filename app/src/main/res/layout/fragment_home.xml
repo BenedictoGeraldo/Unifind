@@ -7,23 +7,61 @@
     android:paddingBottom="80dp"
     tools:context=".ui.home.HomeFragment">
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_profile"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/abdul"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Tab Layout -->
+    <ImageButton
+        android:id="@+id/btn_filter"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Filter"
+        android:src="@drawable/ic_filter"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_profile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/iv_profile" />
+
+    <EditText
+        android:id="@+id/et_search"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:background="@drawable/search_background"
+        android:drawableEnd="@android:drawable/ic_menu_search"
+        android:drawablePadding="8dp"
+        android:hint="Cari barang.."
+        android:inputType="text"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_profile"
+        app:layout_constraintEnd_toStartOf="@+id/btn_filter"
+        app:layout_constraintStart_toEndOf="@+id/iv_profile"
+        app:layout_constraintTop_toTopOf="@+id/iv_profile" />
+
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:contentDescription="Pilih pencarian atau penemuan"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_profile"
         app:tabIndicatorColor="@color/biru_tab"
-        app:tabSelectedTextColor="@color/biru_tab"
         app:tabIndicatorFullWidth="false"
         app:tabTextAppearance="@style/customtab"
         app:tabTextColor="@color/abu_tab" />
 
-    <!-- ViewPager2 -->
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager"
         android:layout_width="0dp"
@@ -32,4 +70,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tab_layout" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
