@@ -10,22 +10,18 @@ import com.androidprojek.unifind.databinding.ItemPenemuanBinding
 import com.androidprojek.unifind.model.PenemuanModel
 import com.bumptech.glide.Glide
 
-// Pastikan parameter konstruktor adalah MutableList
 class PenemuanAdapter(private var listPenemuan: MutableList<PenemuanModel>) : RecyclerView.Adapter<PenemuanAdapter.ViewHolder>() {
 
     inner class ViewHolder(private val binding: ItemPenemuanBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(penemuan: PenemuanModel) {
-            // Mengisi data dari model ke view
             binding.tvNamaPenemu.text = penemuan.namaPelapor
             binding.tvNimPenemu.text = penemuan.nim
             binding.tvNamaBarang.text = penemuan.namaBarang
-            binding.tvStatus.text = "Dalam Pencarian" // Diatur statis
+            binding.tvStatus.text = "Dalam Pencarian"
 
-            // Mengatur gambar profil (placeholder)
             binding.ivFotoProfil.setImageResource(R.drawable.ic_launcher_background)
 
-            // Mengatur gambar barang (ViewPager2)
             penemuan.imageUrl?.let { url ->
                 if (url.isNotEmpty()) {
                     val imageUrlList = listOf(url)
@@ -42,7 +38,6 @@ class PenemuanAdapter(private var listPenemuan: MutableList<PenemuanModel>) : Re
                 binding.dotsIndicator.visibility = View.GONE
             }
 
-            // Mengisi data di bagian detail
             binding.tvDetailNamaBarang.text = penemuan.namaBarang
             binding.tvDetailKategori.text = penemuan.kategori
             binding.tvDetailDeskripsi.text = penemuan.deskripsi
@@ -50,7 +45,6 @@ class PenemuanAdapter(private var listPenemuan: MutableList<PenemuanModel>) : Re
             binding.tvDetailWaktu.text = penemuan.waktuPenemuan
             binding.tvDetailLokasi.text = penemuan.lokasiPenemuan
 
-            // Mengatur logika untuk tombol expand/collapse
             setupToggleButton(binding)
         }
 
@@ -78,7 +72,7 @@ class PenemuanAdapter(private var listPenemuan: MutableList<PenemuanModel>) : Re
             }
 
             binding.btnKanan.setOnClickListener {
-                // TODO: Tambahkan logika untuk proses klaim barang di sini
+                // Logika untuk klaim barang
             }
         }
     }
@@ -94,4 +88,10 @@ class PenemuanAdapter(private var listPenemuan: MutableList<PenemuanModel>) : Re
 
     override fun getItemCount(): Int = listPenemuan.size
 
+    // Fungsi ini dipanggil oleh observer di PenemuanFragment
+    fun updateData(newList: List<PenemuanModel>) {
+        listPenemuan.clear()
+        listPenemuan.addAll(newList)
+        notifyDataSetChanged()
+    }
 }

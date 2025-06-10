@@ -109,7 +109,8 @@
             android:text="Postingan Saya"
             android:backgroundTint="#005B92"
             android:textColor="#FFFFFF"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="12dp"
+            android:textAllCaps="false" />
 
         <Button
             android:id="@+id/btnKontak"
@@ -118,7 +119,8 @@
             android:text="Kontak"
             android:backgroundTint="#005B92"
             android:textColor="#FFFFFF"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="12dp"
+            android:textAllCaps="false" />
 
         <Button
             android:id="@+id/btnLacakFormulir"
@@ -127,7 +129,8 @@
             android:text="Lacak Formulir"
             android:backgroundTint="#005B92"
             android:textColor="#FFFFFF"
-            android:layout_marginBottom="24dp" />
+            android:layout_marginBottom="24dp"
+            android:textAllCaps="false" />
 
         <Button
             android:id="@+id/btnLogout"
@@ -135,6 +138,7 @@
             android:layout_height="wrap_content"
             android:text="Log Out"
             android:backgroundTint="#D22B2B"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            android:textAllCaps="false" />
     </LinearLayout>
 </ScrollView>

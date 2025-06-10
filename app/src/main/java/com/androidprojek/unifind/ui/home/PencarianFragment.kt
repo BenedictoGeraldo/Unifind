@@ -13,6 +13,7 @@ import com.androidprojek.unifind.model.BarangModel
 import com.androidprojek.unifind.ui.FormBarangActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration // <-- 1. TAMBAHKAN IMPORT INI
 import com.google.firebase.firestore.Query
 
 class PencarianFragment : Fragment() {
@@ -26,13 +27,23 @@ class PencarianFragment : Fragment() {
     private val listBarang = mutableListOf<BarangModel>()
     private lateinit var barangAdapter: BarangAdapter
 
+    // --- 2. DEKLARASIKAN VARIABEL UNTUK MENAMPUNG LISTENER ---
+    private var firestoreListener: ListenerRegistration? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentPencarianBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    // Pindahkan logika ke onViewCreated untuk praktik terbaik
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         db = FirebaseFirestore.getInstance()
-        auth = FirebaseAuth.getInstance() // Inisialisasi Auth
+        auth = FirebaseAuth.getInstance()
 
         setupRecyclerView()
 
@@ -41,8 +52,6 @@ class PencarianFragment : Fragment() {
         }
 
         listenToLostItems()
-
-        return binding.root
     }
 
     private fun setupRecyclerView() {
@@ -55,7 +64,6 @@ class PencarianFragment : Fragment() {
 
     private fun listenToLostItems() {
         val currentUser = auth.currentUser
-        // Jika tidak ada user yang login, jangan tampilkan apa-apa
         if (currentUser == null) {
             binding.tvEmpty.visibility = View.VISIBLE
             binding.tvEmpty.text = "Silakan login untuk melihat postingan."
@@ -66,34 +74,43 @@ class PencarianFragment : Fragment() {
         binding.progressBar.visibility = View.VISIBLE
         binding.tvEmpty.visibility = View.GONE
 
-        // --- PERUBAHAN UTAMA DI SINI ---
-        // Query ke Firestore dengan filter "TIDAK SAMA DENGAN" UID kita
-        db.collection("barangHilang")
+        val query = db.collection("barangHilang")
             .orderBy("timestamp", Query.Direction.DESCENDING)
-            .whereNotEqualTo("pelaporUid", uidPenggunaSaatIni) // Filter postingan
-            .addSnapshotListener { snapshots, error ->
-                binding.progressBar.visibility = View.GONE
+            .whereNotEqualTo("pelaporUid", uidPenggunaSaatIni)
 
-                if (error != null) { return@addSnapshotListener }
-
-                if (snapshots != null) {
-                    listBarang.clear()
-                    val result = snapshots.toObjects(BarangModel::class.java)
-                    listBarang.addAll(result)
-                    barangAdapter.notifyDataSetChanged()
-                }
-
-                if (listBarang.isEmpty()) {
-                    binding.tvEmpty.visibility = View.VISIBLE
-                    binding.tvEmpty.text = "Belum ada laporan kehilangan dari pengguna lain."
-                } else {
-                    binding.tvEmpty.visibility = View.GONE
-                }
+        // --- 3. SIMPAN LISTENER KE DALAM VARIABEL ---
+        firestoreListener = query.addSnapshotListener { snapshots, error ->
+            // Tambahan keamanan: Cek jika binding masih ada sebelum melakukan apa pun
+            if (_binding == null) {
+                return@addSnapshotListener
             }
+
+            binding.progressBar.visibility = View.GONE
+
+            if (error != null) { return@addSnapshotListener }
+
+            if (snapshots != null) {
+                listBarang.clear()
+                val result = snapshots.toObjects(BarangModel::class.java)
+                listBarang.addAll(result)
+                barangAdapter.notifyDataSetChanged()
+            }
+
+            if (listBarang.isEmpty()) {
+                binding.tvEmpty.visibility = View.VISIBLE
+                binding.tvEmpty.text = "Belum ada laporan kehilangan dari pengguna lain."
+            } else {
+                binding.tvEmpty.visibility = View.GONE
+            }
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+
+        // --- 4. HENTIKAN LISTENER SAAT FRAGMENT DIHANCURKAN ---
+        firestoreListener?.remove()
+
         _binding = null
     }
 }

@@ -11,6 +11,8 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.androidprojek.unifind.ui.profile.KontakActivity // <-- Pastikan import ini ada
 import com.androidprojek.unifind.LoginActivity
 import com.androidprojek.unifind.R
 import com.androidprojek.unifind.databinding.FragmentProfileBinding
@@ -64,35 +66,32 @@ class ProfileFragment : Fragment() {
         }
 
         binding.btnPostinganSaya.setOnClickListener {
-            // TODO: Tambahkan logika untuk ke halaman Postingan Saya di sini
-            Toast.makeText(requireContext(), "Fitur ini dalam pengembangan", Toast.LENGTH_SHORT).show()
-        }
-
-        binding.btnKontak.setOnClickListener {
-            startActivity(Intent(requireContext(), KontakActivity::class.java))
-        }
-
-        binding.btnLacakFormulir.setOnClickListener {
-            // TODO: Tambahkan logika untuk ke halaman Lacak Formulir di sini
-            Toast.makeText(requireContext(), "Fitur ini dalam pengembangan", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_profileFragment_to_profileMyPostsFragment)
         }
 
         // --- PERUBAHAN UTAMA DI SINI ---
+        binding.btnKontak.setOnClickListener {
+            // Hapus Toast dan aktifkan Intent untuk memulai KontakActivity
+            val intent = Intent(requireContext(), KontakActivity::class.java)
+            startActivity(intent)
+        }
+        // --- SELESAI PERUBAHAN ---
+
+        binding.btnLacakFormulir.setOnClickListener {
+            Toast.makeText(requireContext(), "Fitur ini dalam pengembangan", Toast.LENGTH_SHORT).show()
+        }
+
         binding.btnLogout.setOnClickListener {
             showLogoutConfirmationDialog()
         }
     }
 
-    // --- FUNGSI BARU UNTUK DIALOG KONFIRMASI ---
     private fun showLogoutConfirmationDialog() {
         AlertDialog.Builder(requireContext())
             .setTitle("Konfirmasi Logout")
             .setMessage("Apakah Anda yakin ingin keluar dari akun ini?")
             .setPositiveButton("Ya, Keluar") { dialog, _ ->
-                // Jika pengguna menekan "Ya", lakukan proses logout
                 auth.signOut()
-
-                // Arahkan ke LoginActivity dan hapus semua activity sebelumnya dari back stack
                 val intent = Intent(requireContext(), LoginActivity::class.java).apply {
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 }
@@ -100,7 +99,6 @@ class ProfileFragment : Fragment() {
                 dialog.dismiss()
             }
             .setNegativeButton("Batal") { dialog, _ ->
-                // Jika pengguna menekan "Batal", tutup saja dialognya
                 dialog.dismiss()
             }
             .create()
@@ -157,7 +155,6 @@ class ProfileFragment : Fragment() {
         binding.profileProgressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
         binding.ivEditProfile.isEnabled = !isLoading
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

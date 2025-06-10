@@ -5,7 +5,6 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_home">
 
-
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.androidprojek.unifind.ui.dashboard.DashboardFragment"
@@ -28,15 +27,19 @@
         android:id="@+id/navigation_profile"
         android:name="com.androidprojek.unifind.ui.profile.ProfileFragment"
         android:label="Profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile">
 
-    <!-- Fragment untuk form tambah pelacakan -->
+        <action
+            android:id="@+id/action_profileFragment_to_profileMyPostsFragment"
+            app:destination="@id/profileMyPostsFragment" />
+
+    </fragment>
+
     <fragment
         android:id="@+id/add_tracking_fragment"
         android:name="com.androidprojek.unifind.ui.dashboard.AddTrackingFragment"
         android:label="Tambah Pelacakan" />
 
-    <!--Penemuan form -->
     <fragment
         android:id="@+id/penemuan_post_form"
         android:name="com.androidprojek.unifind.ui.home.penemuan_post_form"
@@ -48,18 +51,21 @@
         android:name="com.androidprojek.unifind.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home">
-
-        <!-- PINDAHKAN ACTION KE SINI -->
         <action
             android:id="@+id/action_penemuan_to_penemuanPostForm"
             app:destination="@id/penemuan_post_form" />
-
     </fragment>
 
-    <!-- Penemuan Fragment tidak perlu punya action lagi -->
     <fragment
         android:id="@+id/navigation_penemuan"
         android:name="com.androidprojek.unifind.ui.home.PenemuanFragment"
         android:label="Penemuan"
         tools:layout="@layout/fragment_penemuan" />
+
+    <fragment
+        android:id="@+id/profileMyPostsFragment"
+        android:name="com.androidprojek.unifind.ui.profile.ProfileMyPostsFragment"
+        android:label="Postingan Saya"
+        tools:layout="@layout/fragment_profile_my_posts" />
+
 </navigation>
