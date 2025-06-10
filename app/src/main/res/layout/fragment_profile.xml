@@ -1,71 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F9FBFC"
-    xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.profile.ProfileFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:gravity="center_horizontal"
+        android:orientation="vertical"
         android:padding="24dp">
 
         <TextView
             android:id="@+id/tvAkun"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:text="Akun"
-            android:textSize="20sp"
             android:textColor="#005B92"
-            android:textStyle="bold"
-            android:layout_marginBottom="16dp" />
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-        <!-- Foto Profil Bulat -->
         <FrameLayout
             android:layout_width="94dp"
             android:layout_height="94dp"
             android:layout_marginBottom="12dp">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/ivProfile"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/abdul"
-                android:background="@drawable/circle_mask"
-                android:clipToOutline="true" />
+                android:src="@drawable/baseline_person_outline_24"
+                app:civ_border_color="#005B92"
+                app:civ_border_width="2dp" />
 
             <ImageView
                 android:id="@+id/ivEditProfile"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_gravity="bottom|end"
-                android:layout_margin="4dp"
-                android:src="@drawable/ic_edit" />
+                android:background="@drawable/circle_mask"
+                android:backgroundTint="@color/blue_500"
+                android:padding="4dp"
+                android:src="@drawable/ic_edit"
+                app:tint="@android:color/white" />
+
+            <ProgressBar
+                android:id="@+id/profileProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"/>
+
         </FrameLayout>
 
-        <!-- Nama & NIM -->
         <TextView
             android:id="@+id/tvNama"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Abdul Hakim Darassalam"
-            android:textSize="18sp"
+            android:layout_marginBottom="4dp"
             android:textColor="#005B92"
+            android:textSize="18sp"
             android:textStyle="bold"
-            android:layout_marginBottom="4dp" />
+            tools:text="Nama Pengguna" />
 
         <TextView
             android:id="@+id/tvNim"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2210512047"
-            android:textSize="14sp"
+            android:layout_marginBottom="16dp"
             android:textColor="#2F90BD"
-            android:layout_marginBottom="16dp" />
+            android:textSize="14sp"
+            tools:text="NIM Pengguna" />
 
         <!-- Password (TextView dengan toggle) -->
         <LinearLayout
@@ -93,7 +102,6 @@
                 android:src="@drawable/ic_eye" />
         </LinearLayout>
 
-        <!-- Tombol-tombol -->
         <Button
             android:id="@+id/btnPostinganSaya"
             android:layout_width="match_parent"
@@ -108,7 +116,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Kontak"
-            android:drawablePadding="8dp"
             android:backgroundTint="#005B92"
             android:textColor="#FFFFFF"
             android:layout_marginBottom="12dp" />

@@ -14,22 +14,25 @@ import androidx.appcompat.app.AppCompatActivity
 import com.androidprojek.unifind.R
 import com.androidprojek.unifind.databinding.ActivityFormBarangBinding
 import com.androidprojek.unifind.model.BarangModel
+import com.androidprojek.unifind.model.UserModel // <-- Pastikan UserModel di-import
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-import kotlinx.coroutines.tasks.await
 import java.text.SimpleDateFormat
 import java.util.*
 
 class FormBarangActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityFormBarangBinding
-    // --- PERUBAHAN 1: Menggunakan List untuk menampung banyak URI gambar ---
     private val selectedImageUris = mutableListOf<Uri>()
     private val calendar = Calendar.getInstance()
 
-    // Inisialisasi Firebase
     private lateinit var db: FirebaseFirestore
     private lateinit var storage: FirebaseStorage
+    private lateinit var auth: FirebaseAuth
+
+    // --- PERUBAHAN 1: Tambahkan variabel untuk semua data profil ---
+    private var currentUserProfile: UserModel? = null
 
     companion object {
         const val PICK_IMAGES_REQUEST = 1
@@ -40,24 +43,93 @@ class FormBarangActivity : AppCompatActivity() {
         binding = ActivityFormBarangBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Hubungkan ke instance Firebase
         db = FirebaseFirestore.getInstance()
         storage = FirebaseStorage.getInstance()
+        auth = FirebaseAuth.getInstance()
 
+        fetchUserProfile()
         setupSpinner()
         setupDateTimePickers()
         setupButtonListeners()
     }
 
-    // Fungsi setupSpinner dan setupDateTimePickers tidak berubah, biarkan seperti apa adanya...
+    // --- PERUBAHAN 2: fetchUserProfile sekarang mengambil seluruh objek UserModel ---
+    private fun fetchUserProfile() {
+        val user = auth.currentUser
+        if (user == null) {
+            Toast.makeText(this, "Sesi login tidak valid.", Toast.LENGTH_LONG).show()
+            finish()
+            return
+        }
+
+        setLoading(true) // Tampilkan loading saat mengambil profil
+        db.collection("users").document(user.uid).get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    // Simpan seluruh objek profil ke dalam variabel
+                    currentUserProfile = document.toObject(UserModel::class.java)
+                } else {
+                    Toast.makeText(this, "Data profil tidak ditemukan.", Toast.LENGTH_SHORT).show()
+                }
+                setLoading(false) // Sembunyikan loading setelah selesai
+            }
+            .addOnFailureListener {
+                setLoading(false)
+                Toast.makeText(this, "Gagal mengambil data profil.", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    // --- PERUBAHAN 3: saveDataToFirestore sekarang menggunakan data lengkap dari profil ---
+    private fun saveDataToFirestore(imageUrls: List<String>) {
+        val currentUser = auth.currentUser
+        // Pastikan profil dan user tidak null
+        if (currentUser == null || currentUserProfile == null) {
+            setLoading(false)
+            Toast.makeText(this, "Tidak bisa menyimpan, data pengguna tidak lengkap.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val barang = BarangModel(
+            // --- Mengisi data pelapor dari objek currentUserProfile ---
+            pelaporUid = currentUser.uid,
+            nama = currentUserProfile!!.nama,
+            nim = currentUserProfile!!.nim,
+            pelaporPhotoUrl = currentUserProfile!!.photoUrl,
+            pelaporInstagram = currentUserProfile!!.instagram,
+            pelaporLine = currentUserProfile!!.line,
+            pelaporWhatsapp = currentUserProfile!!.whatsapp,
+
+            // --- Sisa data diambil dari form seperti biasa ---
+            namaBarang = binding.etNamaBarang.text.toString(),
+            kategori = binding.spinnerKategori.selectedItem.toString(),
+            deskripsi = binding.etDeskripsi.text.toString(),
+            tanggalHilang = binding.tvTanggal.text.toString(),
+            waktuHilang = binding.tvWaktu.text.toString(),
+            lokasiHilang = binding.etLokasi.text.toString(),
+            fotoUris = imageUrls,
+            status = "Dalam Pencarian"
+        )
+
+        db.collection("barangHilang").add(barang)
+            .addOnSuccessListener {
+                setLoading(false)
+                Toast.makeText(this, "Laporan berhasil dibuat!", Toast.LENGTH_LONG).show()
+                finish()
+            }
+            .addOnFailureListener { e ->
+                setLoading(false)
+                Toast.makeText(this, "Gagal menyimpan data: ${e.message}", Toast.LENGTH_LONG).show()
+            }
+    }
+
+    // ... (Sisa fungsi lainnya: setupSpinner, setupButtonListeners, onActivityResult, dll. tidak ada perubahan) ...
     private fun setupSpinner() {
-        ArrayAdapter.createFromResource(
-            this, R.array.kategori_barang, android.R.layout.simple_spinner_item
-        ).also { adapter ->
+        ArrayAdapter.createFromResource(this, R.array.kategori_barang, android.R.layout.simple_spinner_item).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             binding.spinnerKategori.adapter = adapter
         }
     }
+
     private fun setupDateTimePickers() {
         val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
             calendar.set(Calendar.YEAR, year); calendar.set(Calendar.MONTH, month); calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
@@ -75,51 +147,38 @@ class FormBarangActivity : AppCompatActivity() {
         }
     }
 
-
     private fun setupButtonListeners() {
         binding.btnUploadGambar.setOnClickListener {
-            // --- PERUBAHAN 2: Intent untuk memilih BANYAK gambar ---
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
             startActivityForResult(intent, PICK_IMAGES_REQUEST)
         }
-
         binding.btnSimpan.setOnClickListener {
             if (isValidInput()) {
-                // Memulai proses upload dan simpan ke Firebase
                 uploadImagesAndSaveData()
             }
         }
     }
 
-    // --- PERUBAHAN 3: Logika onActivityResult untuk menangani banyak gambar ---
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PICK_IMAGES_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
-            selectedImageUris.clear() // Kosongkan list sebelum diisi lagi
+            selectedImageUris.clear()
             if (data.clipData != null) {
-                // Pengguna memilih lebih dari satu gambar
-                val count = data.clipData!!.itemCount
-                for (i in 0 until count) {
-                    val imageUri = data.clipData!!.getItemAt(i).uri
-                    selectedImageUris.add(imageUri)
+                for (i in 0 until data.clipData!!.itemCount) {
+                    selectedImageUris.add(data.clipData!!.getItemAt(i).uri)
                 }
             } else if (data.data != null) {
-                // Pengguna hanya memilih satu gambar
-                val imageUri = data.data!!
-                selectedImageUris.add(imageUri)
+                selectedImageUris.add(data.data!!)
             }
-
-            // Update UI untuk menunjukkan jumlah gambar yang dipilih
             binding.tvImageCount.text = "${selectedImageUris.size} gambar dipilih"
             binding.tvImageCount.visibility = View.VISIBLE
         }
     }
 
     private fun isValidInput(): Boolean {
-        // (Validasi lain tetap sama...)
-        if (binding.etNama.text.isBlank() || binding.etNamaBarang.text.isBlank()) {
-            Toast.makeText(this, "Nama dan Nama Barang tidak boleh kosong", Toast.LENGTH_SHORT).show()
+        if (binding.etNamaBarang.text.isBlank()) {
+            Toast.makeText(this, "Nama Barang tidak boleh kosong", Toast.LENGTH_SHORT).show()
             return false
         }
         if (binding.spinnerKategori.selectedItemPosition == 0) {
@@ -130,7 +189,6 @@ class FormBarangActivity : AppCompatActivity() {
             Toast.makeText(this, "Silakan tentukan tanggal dan waktu", Toast.LENGTH_SHORT).show()
             return false
         }
-        // --- PERUBAHAN 4: Cek jika list gambar tidak kosong ---
         if (selectedImageUris.isEmpty()) {
             Toast.makeText(this, "Silakan pilih gambar terlebih dahulu", Toast.LENGTH_SHORT).show()
             return false
@@ -138,70 +196,32 @@ class FormBarangActivity : AppCompatActivity() {
         return true
     }
 
-    // --- PERUBAHAN 5: Fungsi inti untuk upload banyak gambar dan simpan ke Firestore ---
     private fun uploadImagesAndSaveData() {
         setLoading(true)
-
         val uploadedImageUrls = mutableListOf<String>()
         var uploadCounter = 0
-
         if (selectedImageUris.isEmpty()) {
             setLoading(false)
             return
         }
-
-        // Loop untuk mengunggah setiap gambar
         for (uri in selectedImageUris) {
             val fileName = "images/${System.currentTimeMillis()}_${uri.lastPathSegment}"
             val storageRef = storage.reference.child(fileName)
-
             storageRef.putFile(uri)
                 .addOnSuccessListener {
-                    // Jika satu gambar berhasil di-upload, dapatkan URL-nya
                     storageRef.downloadUrl.addOnSuccessListener { downloadUrl ->
                         uploadedImageUrls.add(downloadUrl.toString())
                         uploadCounter++
-
-                        // Cek apakah semua gambar sudah ter-upload
                         if (uploadCounter == selectedImageUris.size) {
-                            // Jika ya, simpan semua data ke Firestore
                             saveDataToFirestore(uploadedImageUrls)
                         }
                     }
                 }
                 .addOnFailureListener { e ->
-                    // Jika ada satu saja yang gagal, hentikan proses
                     setLoading(false)
                     Toast.makeText(this, "Gagal mengunggah gambar: ${e.message}", Toast.LENGTH_LONG).show()
                 }
         }
-    }
-
-    private fun saveDataToFirestore(imageUrls: List<String>) {
-        val barang = BarangModel(
-            nama = binding.etNama.text.toString(),
-            nim = binding.etNim.text.toString(),
-            namaBarang = binding.etNamaBarang.text.toString(),
-            kategori = binding.spinnerKategori.selectedItem.toString(),
-            deskripsi = binding.etDeskripsi.text.toString(),
-            tanggalHilang = binding.tvTanggal.text.toString(),
-            waktuHilang = binding.tvWaktu.text.toString(),
-            lokasiHilang = binding.etLokasi.text.toString(),
-            fotoUris = imageUrls, // Simpan list URL, bukan satu string lagi
-            status = "Dalam Pencarian"
-        )
-
-        db.collection("barangHilang")
-            .add(barang)
-            .addOnSuccessListener {
-                setLoading(false)
-                Toast.makeText(this, "Laporan berhasil dibuat!", Toast.LENGTH_LONG).show()
-                finish()
-            }
-            .addOnFailureListener { e ->
-                setLoading(false)
-                Toast.makeText(this, "Gagal menyimpan data: ${e.message}", Toast.LENGTH_LONG).show()
-            }
     }
 
     private fun setLoading(isLoading: Boolean) {
@@ -210,11 +230,11 @@ class FormBarangActivity : AppCompatActivity() {
         binding.btnUploadGambar.isEnabled = !isLoading
     }
 
-    // Fungsi updateDateInView dan updateTimeInView tidak berubah...
     private fun updateDateInView() {
         val myFormat = "dd-MM-yyyy"; val sdf = SimpleDateFormat(myFormat, Locale.getDefault())
         binding.tvTanggal.text = sdf.format(calendar.time)
     }
+
     private fun updateTimeInView() {
         val myFormat = "HH:mm"; val sdf = SimpleDateFormat(myFormat, Locale.getDefault())
         binding.tvWaktu.text = sdf.format(calendar.time)

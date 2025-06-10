@@ -108,5 +108,13 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
         }
+
+        // =======================
+        // NAVIGASI KE REGISTER
+        // =======================
+        binding.tvDaftar.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

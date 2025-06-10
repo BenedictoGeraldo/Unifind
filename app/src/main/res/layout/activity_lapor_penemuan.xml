@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F9FDFC"
+    tools:context=".ui.LaporPenemuanActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/topAppBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:navigationIcon="@drawable/ic_back_arrow"
+                app:title="Lapor Penemuan Barang"
+                app:titleTextColor="#003A64"
+                android:background="?attr/colorSurface"
+                android:elevation="4dp"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="24dp"
+                android:paddingTop="24dp"
+                android:paddingBottom="32dp">
+
+                <TextView
+                    android:id="@+id/labelInfoBarang"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Anda melaporkan penemuan untuk barang:"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="8dp"/>
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardInfoBarang"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/labelInfoBarang"
+                    app:cardBackgroundColor="#E8F4F8"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="0dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+                        <TextView
+                            android:id="@+id/tvNamaBarangAsli"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="Nama Barang: ..."
+                            android:textStyle="bold"
+                            android:textColor="#005B92"/>
+                        <TextView
+                            android:id="@+id/tvKategoriAsli"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="Kategori: ..."
+                            android:textColor="#005B92"/>
+                        <TextView
+                            android:id="@+id/tvNamaPelaporAsli"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="Pelapor: ..."
+                            android:layout_marginTop="4dp"
+                            android:textColor="#005B92"/>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/labelDeskripsiTambahan"
+                    style="@style/SubHeaderTextBlue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/cardInfoBarang"
+                    android:layout_marginTop="24dp"
+                    android:text="Deskripsi Tambahan (opsional)" />
+                <RelativeLayout
+                    android:id="@+id/fieldDeskripsiTambahan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/labelDeskripsiTambahan"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/input_rectangle_description">
+                    <EditText
+                        android:id="@+id/etDeskripsiTambahan"
+                        style="@style/InputTeks"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:gravity="top"
+                        android:hint="Contoh: Ditemukan di bawah kursi..."
+                        android:inputType="textMultiLine"
+                        android:minLines="3"
+                        android:padding="12dp" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/labelTanggalTemuan"
+                    style="@style/SubHeaderTextBlue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/fieldDeskripsiTambahan"
+                    android:layout_marginTop="16dp"
+                    android:text="Tanggal Ditemukan (Wajib)" />
+                <RelativeLayout
+                    android:id="@+id/fieldTanggalTemuan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/labelTanggalTemuan"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/input_rectangle"
+                    android:clickable="true"
+                    android:focusable="true">
+                    <TextView
+                        android:id="@+id/tvTanggalTemuan"
+                        style="@style/InputTeks"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableEnd="@drawable/ic_arrow_down"
+                        android:hint="Pilih tanggal"
+                        android:padding="12dp" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/labelWaktuTemuan"
+                    style="@style/SubHeaderTextBlue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/fieldTanggalTemuan"
+                    android:layout_marginTop="16dp"
+                    android:text="Waktu Ditemukan (Wajib)" />
+                <RelativeLayout
+                    android:id="@+id/fieldWaktuTemuan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/labelWaktuTemuan"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/input_rectangle"
+                    android:clickable="true"
+                    android:focusable="true">
+                    <TextView
+                        android:id="@+id/tvWaktuTemuan"
+                        style="@style/InputTeks"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableEnd="@drawable/ic_arrow_down"
+                        android:hint="Pilih waktu"
+                        android:padding="12dp" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/labelLokasiTemuan"
+                    style="@style/SubHeaderTextBlue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/fieldWaktuTemuan"
+                    android:layout_marginTop="16dp"
+                    android:text="Lokasi Ditemukan (Wajib)" />
+                <RelativeLayout
+                    android:id="@+id/fieldLokasiTemuan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/labelLokasiTemuan"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/input_rectangle"
+                    android:padding="6dp">
+                    <EditText
+                        android:id="@+id/etLokasiTemuan"
+                        style="@style/InputTeks"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:hint="Contoh: Perpustakaan Lt. 2"
+                        android:paddingHorizontal="6dp" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/labelFotoBukti"
+                    style="@style/SubHeaderTextBlue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/fieldLokasiTemuan"
+                    android:layout_marginTop="16dp"
+                    android:text="Foto Barang Bukti (Wajib)" />
+                <LinearLayout
+                    android:id="@+id/fieldFotoBukti"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/labelFotoBukti"
+                    android:layout_marginTop="4dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnUploadGambar"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pilih Gambar"
+                        android:textAllCaps="false"
+                        app:cornerRadius="8dp" />
+                    <TextView
+                        android:id="@+id/tvImageCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:visibility="gone"
+                        tools:text="1 gambar dipilih"
+                        tools:visibility="visible" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btnKirimLaporan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/fieldFotoBukti"
+                    android:layout_marginTop="32dp"
+                    android:background="@drawable/lacak_button"
+                    android:text="Kirim Laporan" />
+            </RelativeLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        tools:visibility="visible"/>
+</RelativeLayout>

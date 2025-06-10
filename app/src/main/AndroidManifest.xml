@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,6 +14,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Unifind"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.LaporPenemuanActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.KontakPelaporActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.DetailBarangActivity"
             android:exported="false" />
@@ -35,7 +45,6 @@
             android:name=".MainActivity"
             android:exported="false"
             android:label="@string/app_name" />
-
         <activity android:name=".ui.profile.KontakActivity" />
     </application>
 

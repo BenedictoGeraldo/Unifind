@@ -1,5 +1,6 @@
 package com.androidprojek.unifind.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.androidprojek.unifind.R
 import com.androidprojek.unifind.model.BarangModel
+import com.androidprojek.unifind.ui.KontakPelaporActivity
+import com.androidprojek.unifind.ui.LaporPenemuanActivity
 import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
@@ -33,7 +36,7 @@ class BarangAdapter(private val listBarang: List<BarangModel>) :
         val tvNamaBarang: TextView = itemView.findViewById(R.id.tvNamaBarang)
         val tvStatus: TextView = itemView.findViewById(R.id.tvStatus)
 
-        // ==== TAMBAHKAN REFERENSI UNTUK SEMUA TEXTVIEW DETAIL DI SINI ====
+        // Detail Tersembunyi
         val layoutDetail: LinearLayout = itemView.findViewById(R.id.layoutDetail)
         val tvDetailKategori: TextView = itemView.findViewById(R.id.tvDetailKategori)
         val tvDetailDeskripsi: TextView = itemView.findViewById(R.id.tvDetailDeskripsi)
@@ -58,22 +61,34 @@ class BarangAdapter(private val listBarang: List<BarangModel>) :
         // 1. Set data header
         holder.tvNamaPelapor.text = barang.nama
         holder.tvNimPelapor.text = barang.nim
-        // Glide.with(holder.itemView.context).load(URL_FOTO_PROFIL_PELAPOR).into(holder.ivFotoProfil)
+
+        // --- PERUBAHAN UTAMA DI SINI ---
+        // Logika Baru untuk Foto Profil
+        if (barang.pelaporPhotoUrl.isNotEmpty()) {
+            // Jika ada URL foto profil, muat dari URL tersebut
+            Glide.with(holder.itemView.context)
+                .load(barang.pelaporPhotoUrl)
+                .placeholder(R.drawable.baseline_person_outline_24) // Opsional: gambar saat loading
+                .error(R.drawable.baseline_person_outline_24) // Tampil jika URL error/kosong
+                .into(holder.ivFotoProfil)
+        } else {
+            // Jika tidak ada URL, tampilkan gambar default secara eksplisit
+            holder.ivFotoProfil.setImageResource(R.drawable.baseline_person_outline_24)
+        }
+        // ---------------------------------
 
         // 2. Set data info utama
         holder.tvNamaBarang.text = barang.namaBarang
         holder.tvStatus.text = barang.status
 
-        // ==== TAMBAHKAN KODE UNTUK MENGISI DATA DETAIL DI SINI ====
-        // Data ini diisi sekali saja, tidak perlu di dalam OnClickListener,
-        // agar siap ditampilkan kapan saja.
+        // 3. Set data untuk detail tersembunyi
         holder.tvDetailKategori.text = barang.kategori
         holder.tvDetailDeskripsi.text = barang.deskripsi
         holder.tvDetailTanggal.text = barang.tanggalHilang
         holder.tvDetailWaktu.text = barang.waktuHilang
         holder.tvDetailLokasi.text = barang.lokasiHilang
 
-        // 3. Setup Image Slider
+        // 4. Setup Image Slider
         if (barang.fotoUris.isNotEmpty()) {
             holder.viewPagerGambarBarang.adapter = ImageSliderAdapter(barang.fotoUris)
             holder.dotsIndicator.attachTo(holder.viewPagerGambarBarang)
@@ -84,8 +99,7 @@ class BarangAdapter(private val listBarang: List<BarangModel>) :
             holder.dotsIndicator.visibility = View.GONE
         }
 
-        // 4. Implementasi expand/collapse detail (Logika ini tetap sama)
-        // Logika ini hanya mengatur visibilitas, datanya sudah kita isi di atas.
+        // 5. Implementasi expand/collapse detail
         holder.ivToggleDetail.setOnClickListener {
             val isVisible = holder.layoutDetail.visibility == View.VISIBLE
             if (isVisible) {
@@ -97,13 +111,31 @@ class BarangAdapter(private val listBarang: List<BarangModel>) :
             }
         }
 
-        // 5. Set listener untuk tombol
+        // 6. Set listener untuk tombol
         holder.btnDetail.setOnClickListener {
-            // Logika untuk menghubungi pelapor
+            // === PERUBAHAN DI SINI ===
+            val context = holder.itemView.context
+            // Buat intent untuk membuka KontakPelaporActivity
+            val intent = Intent(context, KontakPelaporActivity::class.java).apply {
+                // Kirim data kontak pelapor ke activity baru
+                putExtra(KontakPelaporActivity.EXTRA_INSTAGRAM, barang.pelaporInstagram)
+                putExtra(KontakPelaporActivity.EXTRA_LINE, barang.pelaporLine)
+                putExtra(KontakPelaporActivity.EXTRA_WHATSAPP, barang.pelaporWhatsapp)
+            }
+            context.startActivity(intent)
+            // =========================
         }
-
         holder.btnAksiUtama.setOnClickListener {
-            // Logika untuk aksi "Saya Menemukan Ini"
+            val context = holder.itemView.context
+            val intent = Intent(context, LaporPenemuanActivity::class.java).apply {
+                // --- PERUBAHAN DI SINI: KIRIM NAMA PELAPOR JUGA ---
+                putExtra(LaporPenemuanActivity.EXTRA_BARANG_ID, barang.id)
+                putExtra(LaporPenemuanActivity.EXTRA_PELAPOR_UID, barang.pelaporUid)
+                putExtra(LaporPenemuanActivity.EXTRA_NAMA_BARANG, barang.namaBarang)
+                putExtra(LaporPenemuanActivity.EXTRA_KATEGORI, barang.kategori)
+                putExtra(LaporPenemuanActivity.EXTRA_NAMA_PELAPOR, barang.nama) // <-- KIRIM NAMA
+            }
+            context.startActivity(intent)
         }
     }
 
