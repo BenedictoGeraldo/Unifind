@@ -11,6 +11,7 @@ import com.androidprojek.unifind.adapter.BarangAdapter
 import com.androidprojek.unifind.databinding.FragmentPencarianBinding
 import com.androidprojek.unifind.model.BarangModel
 import com.androidprojek.unifind.ui.FormBarangActivity
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 
@@ -19,10 +20,9 @@ class PencarianFragment : Fragment() {
     private var _binding: FragmentPencarianBinding? = null
     private val binding get() = _binding!!
 
-    // Inisialisasi Firebase Firestore
     private lateinit var db: FirebaseFirestore
+    private lateinit var auth: FirebaseAuth
 
-    // List untuk menampung data dari Firestore
     private val listBarang = mutableListOf<BarangModel>()
     private lateinit var barangAdapter: BarangAdapter
 
@@ -32,15 +32,14 @@ class PencarianFragment : Fragment() {
     ): View {
         _binding = FragmentPencarianBinding.inflate(inflater, container, false)
         db = FirebaseFirestore.getInstance()
+        auth = FirebaseAuth.getInstance() // Inisialisasi Auth
 
         setupRecyclerView()
 
-        // Navigasi ke FormBarangActivity, tidak lagi menggunakan onActivityResult
         binding.fabTambah.setOnClickListener {
             startActivity(Intent(requireContext(), FormBarangActivity::class.java))
         }
 
-        // Mulai mendengarkan data dari Firestore
         listenToLostItems()
 
         return binding.root
@@ -55,33 +54,38 @@ class PencarianFragment : Fragment() {
     }
 
     private fun listenToLostItems() {
+        val currentUser = auth.currentUser
+        // Jika tidak ada user yang login, jangan tampilkan apa-apa
+        if (currentUser == null) {
+            binding.tvEmpty.visibility = View.VISIBLE
+            binding.tvEmpty.text = "Silakan login untuk melihat postingan."
+            return
+        }
+        val uidPenggunaSaatIni = currentUser.uid
+
         binding.progressBar.visibility = View.VISIBLE
         binding.tvEmpty.visibility = View.GONE
 
-        // Query ke koleksi "barangHilang", diurutkan berdasarkan timestamp terbaru
+        // --- PERUBAHAN UTAMA DI SINI ---
+        // Query ke Firestore dengan filter "TIDAK SAMA DENGAN" UID kita
         db.collection("barangHilang")
             .orderBy("timestamp", Query.Direction.DESCENDING)
+            .whereNotEqualTo("pelaporUid", uidPenggunaSaatIni) // Filter postingan
             .addSnapshotListener { snapshots, error ->
                 binding.progressBar.visibility = View.GONE
 
-                if (error != null) {
-                    // Handle error
-                    return@addSnapshotListener
-                }
+                if (error != null) { return@addSnapshotListener }
 
                 if (snapshots != null) {
-                    // Kosongkan list lama sebelum diisi data baru
                     listBarang.clear()
-                    // Ubah semua dokumen menjadi objek BarangModel
                     val result = snapshots.toObjects(BarangModel::class.java)
                     listBarang.addAll(result)
-                    // Beri tahu adapter bahwa data telah berubah
                     barangAdapter.notifyDataSetChanged()
                 }
 
-                // Tampilkan pesan jika daftar kosong
                 if (listBarang.isEmpty()) {
                     binding.tvEmpty.visibility = View.VISIBLE
+                    binding.tvEmpty.text = "Belum ada laporan kehilangan dari pengguna lain."
                 } else {
                     binding.tvEmpty.visibility = View.GONE
                 }

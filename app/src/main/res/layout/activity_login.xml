@@ -200,8 +200,18 @@
                     android:textColor="#E6F4F1"
                     android:textSize="16sp"
                     android:fontFamily="@font/plusjakartasans_bold"/>
-
             </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tvDaftar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="24dp"
+                android:padding="8dp"
+                android:textColor="#FCFCD4"
+                android:text="Belum punya akun? Daftar di sini" />
+
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
