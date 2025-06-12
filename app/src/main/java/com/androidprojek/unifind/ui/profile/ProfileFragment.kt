@@ -12,7 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.androidprojek.unifind.ui.profile.KontakActivity // <-- Pastikan import ini ada
+import com.androidprojek.unifind.ui.profile.KontakActivity
 import com.androidprojek.unifind.LoginActivity
 import com.androidprojek.unifind.R
 import com.androidprojek.unifind.databinding.FragmentProfileBinding
@@ -20,6 +20,7 @@ import com.androidprojek.unifind.model.UserModel
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.storage.FirebaseStorage
 
 class ProfileFragment : Fragment() {
@@ -30,6 +31,7 @@ class ProfileFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
     private lateinit var storage: FirebaseStorage
+    private var userProfileListener: ListenerRegistration? = null
 
     private val imagePickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -69,17 +71,16 @@ class ProfileFragment : Fragment() {
             findNavController().navigate(R.id.action_profileFragment_to_profileMyPostsFragment)
         }
 
-        // --- PERUBAHAN UTAMA DI SINI ---
         binding.btnKontak.setOnClickListener {
-            // Hapus Toast dan aktifkan Intent untuk memulai KontakActivity
-            val intent = Intent(requireContext(), KontakActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(requireContext(), KontakActivity::class.java))
+        }
+
+        // --- PERUBAHAN UTAMA DI SINI ---
+        binding.btnLacakFormulir.setOnClickListener {
+            // Menggunakan NavController untuk berpindah ke halaman Lacak Formulir
+            findNavController().navigate(R.id.action_profileFragment_to_profileLacakFormulirFragment)
         }
         // --- SELESAI PERUBAHAN ---
-
-        binding.btnLacakFormulir.setOnClickListener {
-            Toast.makeText(requireContext(), "Fitur ini dalam pengembangan", Toast.LENGTH_SHORT).show()
-        }
 
         binding.btnLogout.setOnClickListener {
             showLogoutConfirmationDialog()
@@ -107,22 +108,25 @@ class ProfileFragment : Fragment() {
 
     private fun loadUserProfile() {
         val user = auth.currentUser ?: return
-        db.collection("users").document(user.uid).get()
-            .addOnSuccessListener { document ->
-                if (document.exists()) {
+        userProfileListener = db.collection("users").document(user.uid)
+            .addSnapshotListener { document, error ->
+                if (activity == null || _binding == null) {
+                    return@addSnapshotListener
+                }
+                if (error != null) {
+                    Toast.makeText(requireContext(), "Gagal memuat profil.", Toast.LENGTH_SHORT).show()
+                    return@addSnapshotListener
+                }
+                if (document != null && document.exists()) {
                     val userProfile = document.toObject(UserModel::class.java)
                     binding.tvNama.text = userProfile?.nama
                     binding.tvNim.text = userProfile?.nim
-
                     if (userProfile?.photoUrl?.isNotEmpty() == true) {
                         Glide.with(this).load(userProfile.photoUrl).into(binding.ivProfile)
                     } else {
                         Glide.with(this).load(R.drawable.baseline_person_outline_24).into(binding.ivProfile)
                     }
                 }
-            }
-            .addOnFailureListener {
-                Toast.makeText(requireContext(), "Gagal memuat profil.", Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -158,6 +162,7 @@ class ProfileFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        userProfileListener?.remove()
         _binding = null
     }
 }

@@ -34,4 +34,20 @@
     <string name="label_waktu_hilang">Waktu Hilang <font color='#FF0000'>*</font></string>
     <string name="label_lokasi_hilang">Lokasi Terakhir Dilihat <font color='#FF0000'>*</font></string>
     <string name="button_laporkan_kehilangan">Laporkan Kehilangan</string>
+
+    <!--Form Klaim Barang-->
+    <string-array name="kategori_barang_array">
+        <item>Pilih Kategori</item>
+        <item>Laptop</item>
+        <item>Handphone</item>
+        <item>Charger</item>
+        <item>Earphone</item>
+        <item>Jam Tangan</item>
+        <item>Alat Tulis</item>
+        <item>Jaket/Hoodie</item>
+        <item>Helm</item>
+        <item>Kartu Identitas</item>
+        <item>Kacamata</item>
+        <item>Lainnya</item>
+    </string-array>
 </resources>

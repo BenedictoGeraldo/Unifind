@@ -1,11 +1,15 @@
 package com.androidprojek.unifind.model
 
 import android.os.Parcelable
+import com.google.firebase.firestore.Exclude
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class PenemuanModel(
-    // Properti ini harus sama persis dengan yang ada di `penemuan_post_form`
+    // TAMBAHKAN PROPERTI INI UNTUK MENYIMPAN ID DOKUMEN DARI FIRESTORE
+    @get:Exclude var id: String? = null,
+
+    // Properti lain yang sudah ada
     val namaPelapor: String? = null,
     val nim: String? = null,
     val namaBarang: String? = null,

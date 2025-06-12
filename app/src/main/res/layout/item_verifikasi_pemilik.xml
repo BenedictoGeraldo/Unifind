@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="2dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_pengklaim_profile"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/baseline_person_outline_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_pengklaim_nama"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/chip_status_verifikasi"
+            app:layout_constraintStart_toEndOf="@+id/iv_pengklaim_profile"
+            app:layout_constraintTop_toTopOf="@+id/iv_pengklaim_profile"
+            tools:text="Nama Pengklaim" />
+
+        <TextView
+            android:id="@+id/tv_pengklaim_nim"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@+id/tv_pengklaim_nama"
+            app:layout_constraintStart_toStartOf="@+id/tv_pengklaim_nama"
+            app:layout_constraintTop_toBottomOf="@+id/tv_pengklaim_nama"
+            tools:text="NIM Pengklaim" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_status_verifikasi"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:text="Sedang diverifikasi"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_pengklaim_nama" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_lihat_jawaban"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="Lihat Jawaban"
+            android:textAllCaps="false"
+            app:backgroundTint="#FFA726"
+            app:cornerRadius="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_pengklaim_profile" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_kontak_pengklaim"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="Kontak"
+            android:textAllCaps="false"
+            android:textColor="#888888"
+            app:icon="@drawable/ic_contact_person"
+            app:iconTint="#888888"
+            app:backgroundTint="#9BA1A2"
+            app:cornerRadius="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/guideline"
+            app:layout_constraintTop_toTopOf="@+id/btn_lihat_jawaban"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_lihat_jawaban"
+            android:layout_marginStart="8dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

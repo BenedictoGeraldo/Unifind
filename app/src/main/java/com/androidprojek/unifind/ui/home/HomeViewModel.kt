@@ -12,7 +12,6 @@ import com.google.firebase.firestore.Query
 class HomeViewModel : ViewModel() {
 
     private val db = FirebaseFirestore.getInstance()
-    // TAMBAHKAN: Instance FirebaseAuth untuk mendapatkan UID pengguna
     private val auth = FirebaseAuth.getInstance()
 
     // DATA SUMBER (INPUTS)
@@ -31,23 +30,15 @@ class HomeViewModel : ViewModel() {
         filteredPenemuanList.addSource(_activeCategories) { applyFiltersAndSearch() }
     }
 
-    /**
-     * Mengambil data secara real-time dari koleksi 'form_penemuan',
-     * MENGECUALIKAN postingan milik pengguna saat ini,
-     * dan mengurutkannya berdasarkan timestamp terbaru.
-     */
     private fun listenToFirestoreChanges() {
         val currentUserUid = auth.currentUser?.uid
 
-        // Jika pengguna tidak login, jangan tampilkan apa-apa di Beranda.
         if (currentUserUid == null) {
             _originalList.value = emptyList()
             return
         }
 
-        // --- PERUBAHAN UTAMA DI SINI ---
         db.collection("form_penemuan")
-            // Hanya ambil dokumen yang 'uid'-nya TIDAK SAMA DENGAN uid pengguna saat ini
             .whereNotEqualTo("uid", currentUserUid)
             .addSnapshotListener { snapshots, error ->
                 if (error != null) {
@@ -55,23 +46,31 @@ class HomeViewModel : ViewModel() {
                     return@addSnapshotListener
                 }
 
-                // Ubah dokumen snapshot menjadi daftar objek PenemuanModel
-                val list = snapshots?.toObjects(PenemuanModel::class.java)
-                _originalList.value = list ?: emptyList() // Update LiveData dengan data baru
+                if (snapshots != null) {
+                    val penemuanList = mutableListOf<PenemuanModel>()
+                    // --- PERUBAHAN UTAMA DI SINI ---
+                    for (document in snapshots.documents) {
+                        // 1. Ubah dokumen menjadi objek PenemuanModel
+                        val item = document.toObject(PenemuanModel::class.java)
+                        if (item != null) {
+                            // 2. Ambil ID dokumen dan masukkan ke dalam properti 'id'
+                            item.id = document.id
+                            penemuanList.add(item)
+                        }
+                    }
+                    _originalList.value = penemuanList
+                } else {
+                    _originalList.value = emptyList()
+                }
             }
     }
 
-    /**
-     * Fungsi inti yang melakukan filter dan pencarian.
-     * Logika ini tidak perlu diubah.
-     */
     private fun applyFiltersAndSearch() {
         val original = _originalList.value ?: emptyList()
         val query = _searchQuery.value?.lowercase()?.trim() ?: ""
         val categories = _activeCategories.value ?: emptyList()
 
         val filteredList = original.filter { item ->
-            // Kondisi 1: Pencarian berdasarkan teks
             val searchCondition = if (query.isEmpty()) {
                 true
             } else {
@@ -79,7 +78,6 @@ class HomeViewModel : ViewModel() {
                         item.kategori?.lowercase()?.contains(query) == true
             }
 
-            // Kondisi 2: Filter berdasarkan kategori
             val filterCondition = if (categories.isEmpty()) {
                 true
             } else {
@@ -91,8 +89,6 @@ class HomeViewModel : ViewModel() {
         filteredPenemuanList.value = filteredList
     }
 
-
-    // FUNGSI PUBLIK (TIDAK BERUBAH)
     fun setSearchQuery(query: String) {
         _searchQuery.value = query
     }

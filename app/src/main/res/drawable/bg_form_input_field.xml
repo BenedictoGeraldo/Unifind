@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Mengatur warna isi menjadi abu-abu sesuai permintaan -->
+    <solid android:color="#E4E4E5" />
+
+    <!-- Mengatur sudutnya agar membulat -->
+    <corners android:radius="8dp" />
+</shape>

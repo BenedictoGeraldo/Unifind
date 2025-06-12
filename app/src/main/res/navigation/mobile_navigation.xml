@@ -5,6 +5,7 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_home">
 
+    <!-- Fragment Bawaan -->
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.androidprojek.unifind.ui.dashboard.DashboardFragment"
@@ -12,60 +13,97 @@
         tools:layout="@layout/fragment_dashboard">
         <action
             android:id="@+id/action_navigation_pelacakan_to_addTrackingFragment"
-            app:destination="@id/add_tracking_fragment"
-            app:popUpTo="@id/navigation_dashboard"
-            app:popUpToInclusive="false" />
+            app:destination="@id/add_tracking_fragment" />
     </fragment>
-
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.androidprojek.unifind.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
-
-    <fragment
-        android:id="@+id/navigation_profile"
-        android:name="com.androidprojek.unifind.ui.profile.ProfileFragment"
-        android:label="Profile"
-        tools:layout="@layout/fragment_profile">
-
-        <action
-            android:id="@+id/action_profileFragment_to_profileMyPostsFragment"
-            app:destination="@id/profileMyPostsFragment" />
-
-    </fragment>
-
     <fragment
         android:id="@+id/add_tracking_fragment"
         android:name="com.androidprojek.unifind.ui.dashboard.AddTrackingFragment"
         android:label="Tambah Pelacakan" />
 
-    <fragment
-        android:id="@+id/penemuan_post_form"
-        android:name="com.androidprojek.unifind.ui.home.penemuan_post_form"
-        android:label="Lapor Barang Ditemukan"
-        tools:layout="@layout/penemuan_post_form" />
-
+    <!-- Halaman Home & Navigasinya -->
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.androidprojek.unifind.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/action_penemuan_to_penemuanPostForm"
+            android:id="@+id/action_navigation_home_to_penemuan_post_form"
             app:destination="@id/penemuan_post_form" />
+        <action
+            android:id="@+id/action_navigation_home_to_penemuanFormKlaimBarangFragment"
+            app:destination="@id/penemuanFormKlaimBarangFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/penemuan_post_form"
+        android:name="com.androidprojek.unifind.ui.home.penemuan_post_form"
+        android:label="Lapor Barang Ditemukan"
+        tools:layout="@layout/penemuan_post_form" />
+    <fragment
+        android:id="@+id/penemuanFormKlaimBarangFragment"
+        android:name="com.androidprojek.unifind.ui.home.PenemuanFormKlaimBarangFragment"
+        android:label="Formulir Klaim Barang"
+        tools:layout="@layout/penemuan_form_klaim_barang">
+        <argument
+            android:name="postId"
+            app:argType="string" />
     </fragment>
 
+    <!-- Halaman Profil & Navigasinya -->
     <fragment
-        android:id="@+id/navigation_penemuan"
-        android:name="com.androidprojek.unifind.ui.home.PenemuanFragment"
-        android:label="Penemuan"
-        tools:layout="@layout/fragment_penemuan" />
+        android:id="@+id/navigation_profile"
+        android:name="com.androidprojek.unifind.ui.profile.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_profileFragment_to_profileMyPostsFragment"
+            app:destination="@id/profileMyPostsFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_profileLacakFormulirFragment"
+            app:destination="@id/profileLacakFormulirFragment" />
+    </fragment>
 
+    <!-- Alur "Postingan Saya" -->
     <fragment
         android:id="@+id/profileMyPostsFragment"
         android:name="com.androidprojek.unifind.ui.profile.ProfileMyPostsFragment"
         android:label="Postingan Saya"
-        tools:layout="@layout/fragment_profile_my_posts" />
+        tools:layout="@layout/fragment_profile_my_posts">
+        <action
+            android:id="@+id/action_profileMyPostsFragment_to_penemuanVerifikasiPemilikFragment"
+            app:destination="@id/penemuanVerifikasiPemilikFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/penemuanVerifikasiPemilikFragment"
+        android:name="com.androidprojek.unifind.ui.profile.verifikasi.PenemuanVerifikasiPemilikFragment"
+        android:label="Verifikasi Pemilik"
+        tools:layout="@layout/profile_penemuan_verifikasi_pemilik">
+        <argument
+            android:name="postId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_verifikasiPemilik_to_detailJawaban"
+            app:destination="@id/penemuanVerifikasiDetailJawabanFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/penemuanVerifikasiDetailJawabanFragment"
+        android:name="com.androidprojek.unifind.ui.profile.verifikasi.PenemuanVerifikasiDetailJawabanFragment"
+        android:label="Detail Jawaban Klaim"
+        tools:layout="@layout/penemuan_verifikasi_detail_jawaban">
+        <argument
+            android:name="dataKlaim"
+            app:argType="com.androidprojek.unifind.model.PenemuanKlaimModel" />
+    </fragment>
+
+    <!-- Alur "Lacak Formulir" -->
+    <fragment
+        android:id="@+id/profileLacakFormulirFragment"
+        android:name="com.androidprojek.unifind.ui.profile.lacakformulir.ProfileLacakFormulirFragment"
+        android:label="Lacak Formulir"
+        tools:layout="@layout/fragment_profile_lacak_formulir" />
 
 </navigation>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Warna isi latar belakang -->
+    <solid android:color="#F0F4F7"/>
+
+    <!-- Sudut yang membulat -->
+    <corners android:radius="8dp"/>
+
+    <!-- Garis tepi putus-putus -->
+    <stroke
+        android:width="2dp"
+        android:color="#D0DDE7"
+        android:dashWidth="10px"
+        android:dashGap="10px"/>
+</shape>

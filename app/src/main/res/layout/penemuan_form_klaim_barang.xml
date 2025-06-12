@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".ui.home.PenemuanFormKlaimBarangFragment">
+
+        <RelativeLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:elevation="4dp"
+            android:paddingHorizontal="24dp"
+            android:paddingVertical="16dp">
+
+            <!-- ID diubah agar lebih spesifik -->
+            <ImageView
+                android:id="@+id/toolbarKlaim"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_back_arrow" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_toEndOf="@+id/toolbarKlaim"
+                android:fontFamily="@font/plusjakartasans_bold"
+                android:gravity="center_vertical"
+                android:text="Formulir Klaim Barang"
+                android:textColor="#005B92"
+                android:textSize="18sp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/header"
+            android:paddingHorizontal="24dp"
+            android:paddingBottom="32dp"
+            android:layout_marginTop="27dp">
+
+            <!-- ID diubah menjadi edtNamaKlaim -->
+            <TextView
+                android:id="@+id/labelNama"
+                style="@style/SubHeaderTextBlue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_nama" />
+            <RelativeLayout
+                android:id="@+id/field_nama"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/labelNama"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/input_rectangle"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="7dp">
+                <EditText
+                    android:id="@+id/edtNamaKlaim"
+                    style="@style/InputTeks"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@android:color/transparent"
+                    android:hint="Masukkan nama lengkap Anda"
+                    android:inputType="textPersonName" />
+            </RelativeLayout>
+
+            <!-- ID diubah menjadi edtNimKlaim -->
+            <TextView
+                android:id="@+id/labelNim"
+                style="@style/SubHeaderTextBlue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/field_nama"
+                android:layout_marginTop="16dp"
+                android:text="@string/label_nim" />
+            <RelativeLayout
+                android:id="@+id/field_nim"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/labelNim"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/input_rectangle"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="7dp">
+                <EditText
+                    android:id="@+id/edtNimKlaim"
+                    style="@style/InputTeks"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@android:color/transparent"
+                    android:hint="Masukkan NIM Anda"
+                    android:inputType="text" />
+            </RelativeLayout>
+
+            <!-- ID diubah menjadi edtNamaBarangKlaim -->
+            <TextView
+                android:id="@+id/labelNamaBarang"
+                style="@style/SubHeaderTextBlue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/field_nim"
+                android:layout_marginTop="16dp"
+                android:text="@string/label_nama_barang" />
+            <RelativeLayout
+                android:id="@+id/field_nama_barang"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/labelNamaBarang"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/input_rectangle"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="7dp">
+                <EditText
+                    android:id="@+id/edtNamaBarangKlaim"
+                    style="@style/InputTeks"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@android:color/transparent"
+                    android:hint="Contoh: Tumbler Corkcicle"
+                    android:inputType="text" />
+            </RelativeLayout>
+
+            <!-- ID diubah menjadi spinnerKategoriKlaim -->
+            <TextView
+                android:id="@+id/labelKategori"
+                style="@style/SubHeaderTextBlue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/field_nama_barang"
+                android:layout_marginTop="16dp"
+                android:text="@string/label_kategori" />
+            <RelativeLayout
+                android:id="@+id/field_kategori"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/labelKategori"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/input_rectangle"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="7dp">
+                <Spinner
+                    android:id="@+id/spinnerKategoriKlaim"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="Pilih kategori barang" />
+            </RelativeLayout>
+
+            <!-- ID diubah menjadi edtDeskripsiKlaim -->
+            <TextView
+                android:id="@+id/labelDeskripsi"
+                style="@style/SubHeaderTextBlue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/field_kategori"
+                android:layout_marginTop="16dp"
+                android:text="@string/label_deskripsi" />
+            <RelativeLayout
+                android:id="@+id/field_deskripsi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/labelDeskripsi"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/input_rectangle_description"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="7dp">
+                <EditText
+                    android:id="@+id/edtDeskripsiKlaim"
+                    style="@style/InputTeks"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@android:color/transparent"
+                    android:gravity="top"
+                    android:hint="Jelaskan ciri-ciri barang..."
+                    android:inputType="textMultiLine"
+                    android:minLines="4" />
+            </RelativeLayout>
+
+            <!-- ID diubah menjadi tvTanggalHilangKlaim -->
+            <TextView
+                android:id="@+id/labelTanggal"
+                style="@style/SubHeaderTextBlue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/field_deskripsi"
+                android:layout_marginTop="16dp"
+                android:text="Tanggal Hilang" />
+            <RelativeLayout
+                android:id="@+id/field_tanggal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/labelTanggal"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/input_rectangle"
+                android:clickable="true"
+                android:focusable="true"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="11dp">
+                <TextView
+                    android:id="@+id/tvTanggalHilangKlaim"
+                    style="@style/InputTeks"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@android:color/transparent"
+                    android:hint="Pilih tanggal barang hilang" />
+            </RelativeLayout>
+
+            <!-- ID diubah menjadi tvWaktuHilangKlaim -->
+            <TextView
+                android:id="@+id/labelWaktu"
+                style="@style/SubHeaderTextBlue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/field_tanggal"
+                android:layout_marginTop="16dp"
+                android:text="Waktu Hilang" />
+            <RelativeLayout
+                android:id="@+id/field_waktu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/labelWaktu"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/input_rectangle"
+                android:clickable="true"
+                android:focusable="true"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="11dp">
+                <TextView
+                    android:id="@+id/tvWaktuHilangKlaim"
+                    style="@style/InputTeks"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@android:color/transparent"
+                    android:hint="Pilih waktu barang hilang" />
+            </RelativeLayout>
+
+            <!-- ID diubah menjadi edtLokasiKlaim -->
+            <TextView
+                android:id="@+id/labelLokasi"
+                style="@style/SubHeaderTextBlue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/field_waktu"
+                android:layout_marginTop="16dp"
+                android:text="Lokasi Terakhir" />
+            <RelativeLayout
+                android:id="@+id/field_lokasi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/labelLokasi"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/input_rectangle"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="7dp">
+                <EditText
+                    android:id="@+id/edtLokasiKlaim"
+                    style="@style/InputTeks"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@android:color/transparent"
+                    android:hint="Masukan lokasi terakhir barang berada"
+                    android:inputType="text" />
+            </RelativeLayout>
+
+            <!-- ID diubah menjadi ivFotoBarangKlaim dan btnUnggahFotoKlaim -->
+            <TextView
+                android:id="@+id/labelFoto"
+                style="@style/SubHeaderTextBlue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/field_lokasi"
+                android:layout_marginTop="16dp"
+                android:text="@string/label_foto" />
+            <RelativeLayout
+                android:id="@+id/field_foto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/labelFoto"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/input_rectangle_image"
+                android:padding="10dp">
+                <ImageView
+                    android:id="@+id/ivFotoBarangKlaim"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_centerInParent="true"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:contentDescription="Foto barang yang diunggah" />
+                <RelativeLayout
+                    android:id="@+id/btnUnggahFotoKlaim"
+                    android:layout_width="95dp"
+                    android:layout_height="25dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/input_rectangle"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground">
+                    <TextView
+                        style="@style/ButtonTeks"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="Unggah Foto" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <!-- ID diubah menjadi btnKirimKlaim -->
+            <RelativeLayout
+                android:id="@+id/btnKirimKlaim"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/field_foto"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="70dp"
+                android:background="@drawable/lacak_button"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:fontFamily="@font/plusjakartasans_bold"
+                    android:text="Kirim Form Klaim Barang"
+                    android:textColor="#F3FBF8"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+</ScrollView>

@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F9FBFC"
+    android:fillViewport="true"
+    tools:context=".ui.profile.verifikasi.PenemuanVerifikasiDetailJawabanFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar_detail_jawaban"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:navigationIcon="@drawable/ic_back_arrow"
+                app:title="Jawaban Pengklaim"
+                app:titleTextColor="@color/biru_tab" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <!-- Header Info Pengklaim -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/iv_detail_profile_pengklaim"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/baseline_person_outline_24" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_toEndOf="@id/iv_detail_profile_pengklaim"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_detail_nama_pengklaim"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        tools:text="User B" />
+
+                    <TextView
+                        android:id="@+id/tv_detail_nim_pengklaim"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/abu_tab"
+                        android:textSize="14sp"
+                        tools:text="2121212121" />
+                </LinearLayout>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_detail_status_verifikasi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    tools:text="Sedang Diverifikasi" />
+            </RelativeLayout>
+
+
+            <!-- NAMA BARANG -->
+            <TextView
+                style="@style/FormLabel"
+                android:text="Nama Barang*" />
+            <TextView
+                android:id="@+id/tv_detail_nama_barang"
+                style="@style/FormValue"
+                tools:text="iPhone 18 Pro Max" />
+
+            <!-- KATEGORI -->
+            <TextView
+                style="@style/FormLabel"
+                android:layout_marginTop="16dp"
+                android:text="Kategori*" />
+            <TextView
+                android:id="@+id/tv_detail_kategori"
+                style="@style/FormValue"
+                tools:text="Handphone" />
+
+            <!-- DESKRIPSI -->
+            <TextView
+                style="@style/FormLabel"
+                android:layout_marginTop="16dp"
+                android:text="Deskripsi*" />
+            <TextView
+                android:id="@+id/tv_detail_deskripsi"
+                style="@style/FormValue"
+                android:lineSpacingExtra="4dp"
+                tools:text="Deskripsi lengkap dari barang yang diklaim oleh pengguna." />
+
+            <!-- TANGGAL HILANG -->
+            <TextView
+                style="@style/FormLabel"
+                android:layout_marginTop="16dp"
+                android:text="Tanggal Hilang*" />
+            <TextView
+                android:id="@+id/tv_detail_tanggal"
+                style="@style/FormValue"
+                tools:text="12 Juni 2025" />
+
+            <!-- WAKTU HILANG -->
+            <TextView
+                style="@style/FormLabel"
+                android:layout_marginTop="16dp"
+                android:text="Waktu Hilang*" />
+            <TextView
+                android:id="@+id/tv_detail_waktu"
+                style="@style/FormValue"
+                tools:text="14:30 WIB" />
+
+            <!-- LOKASI HILANG -->
+            <TextView
+                style="@style/FormLabel"
+                android:layout_marginTop="16dp"
+                android:text="Lokasi Terakhir*" />
+            <TextView
+                android:id="@+id/tv_detail_lokasi"
+                style="@style/FormValue"
+                tools:text="Perpustakaan Lt. 2" />
+
+            <!-- FOTO BARANG -->
+            <TextView
+                style="@style/FormLabel"
+                android:layout_marginTop="16dp"
+                android:text="Foto Bukti dari Pengklaim" />
+            <ImageView
+                android:id="@+id/iv_detail_foto"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="8dp"
+                android:background="#E0E0E0"
+                android:scaleType="centerCrop"
+                android:visibility="gone"
+                tools:src="@tools:sample/backgrounds/scenic"
+                android:contentDescription="Foto bukti dari pengklaim" />
+            <TextView
+                android:id="@+id/tv_detail_foto_kosong"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Pengklaim tidak melampirkan foto."
+                android:gravity="center"
+                android:padding="24dp"
+                android:background="@drawable/bg_form_upload_area"/>
+
+            <!-- TOMBOL AKSI -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="16dp">
+
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_terima_klaim"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Terima"
+                    android:textAllCaps="false"
+                    app:backgroundTint="#3BB552"
+                    android:layout_marginBottom="60dp"
+                    android:layout_marginStart="8dp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
