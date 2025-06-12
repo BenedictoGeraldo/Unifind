@@ -35,6 +35,10 @@ class LaporPenemuanActivity : AppCompatActivity() {
     // Data Penemu (pengguna saat ini)
     private var penemuNama: String = ""
     private var penemuNim: String = ""
+    // Tambahkan variabel untuk menampung kontak penemu
+    private var penemuInstagram: String? = null
+    private var penemuLine: String? = null
+    private var penemuWhatsapp: String? = null
 
     // Data Form
     private val selectedImageUris = mutableListOf<Uri>()
@@ -97,6 +101,10 @@ class LaporPenemuanActivity : AppCompatActivity() {
                 if (document.exists()) {
                     penemuNama = document.getString("nama") ?: "Tanpa Nama"
                     penemuNim = document.getString("nim") ?: "Tanpa NIM"
+                    // --- AMBIL DATA KONTAK DI SINI ---
+                    penemuInstagram = document.getString("instagram")
+                    penemuLine = document.getString("line")
+                    penemuWhatsapp = document.getString("whatsapp")
                 }
             }
     }
@@ -198,6 +206,10 @@ class LaporPenemuanActivity : AppCompatActivity() {
             penemuUid = penemu.uid,
             penemuNama = penemuNama,
             penemuNim = penemuNim,
+            // --- MASUKKAN DATA KONTAK KE MODEL ---
+            penemuInstagram = penemuInstagram,
+            penemuLine = penemuLine,
+            penemuWhatsapp = penemuWhatsapp,
             deskripsiTambahan = binding.etDeskripsiTambahan.text.toString().trim(),
             tanggalTemuan = binding.tvTanggalTemuan.text.toString(),
             waktuTemuan = binding.tvWaktuTemuan.text.toString(),

@@ -2,6 +2,7 @@ package com.androidprojek.unifind.ui.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +14,7 @@ import com.androidprojek.unifind.model.BarangModel
 import com.androidprojek.unifind.ui.FormBarangActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ListenerRegistration // <-- 1. TAMBAHKAN IMPORT INI
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
 
 class PencarianFragment : Fragment() {
@@ -27,7 +28,6 @@ class PencarianFragment : Fragment() {
     private val listBarang = mutableListOf<BarangModel>()
     private lateinit var barangAdapter: BarangAdapter
 
-    // --- 2. DEKLARASIKAN VARIABEL UNTUK MENAMPUNG LISTENER ---
     private var firestoreListener: ListenerRegistration? = null
 
     override fun onCreateView(
@@ -38,7 +38,6 @@ class PencarianFragment : Fragment() {
         return binding.root
     }
 
-    // Pindahkan logika ke onViewCreated untuk praktik terbaik
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -51,6 +50,7 @@ class PencarianFragment : Fragment() {
             startActivity(Intent(requireContext(), FormBarangActivity::class.java))
         }
 
+        // Panggil listener saat view sudah dibuat
         listenToLostItems()
     }
 
@@ -74,25 +74,43 @@ class PencarianFragment : Fragment() {
         binding.progressBar.visibility = View.VISIBLE
         binding.tvEmpty.visibility = View.GONE
 
+        // --- PERUBAHAN UTAMA PADA QUERY ---
+        // 1. Kita HANYA memfilter berdasarkan status yang masih aktif.
+        //    Filter `whereNotEqualTo` kita pindahkan ke sisi aplikasi.
         val query = db.collection("barangHilang")
+            .whereEqualTo("status", "Dalam Pencarian")
             .orderBy("timestamp", Query.Direction.DESCENDING)
-            .whereNotEqualTo("pelaporUid", uidPenggunaSaatIni)
 
-        // --- 3. SIMPAN LISTENER KE DALAM VARIABEL ---
         firestoreListener = query.addSnapshotListener { snapshots, error ->
-            // Tambahan keamanan: Cek jika binding masih ada sebelum melakukan apa pun
             if (_binding == null) {
                 return@addSnapshotListener
             }
-
             binding.progressBar.visibility = View.GONE
 
-            if (error != null) { return@addSnapshotListener }
+            if (error != null) {
+                Log.w("PencarianFragment", "Error listening for documents.", error)
+                return@addSnapshotListener
+            }
 
             if (snapshots != null) {
                 listBarang.clear()
-                val result = snapshots.toObjects(BarangModel::class.java)
-                listBarang.addAll(result)
+
+                // --- PERUBAHAN LOGIKA PENYARINGAN & PENGAMBILAN DATA ---
+                // Loop manual untuk mendapatkan ID dan melakukan filter tambahan
+                for (doc in snapshots.documents) {
+                    val barang = doc.toObject(BarangModel::class.java)
+                    if (barang != null) {
+                        // Cek jika UID pelapor BUKAN pengguna saat ini
+                        if (barang.pelaporUid != uidPenggunaSaatIni) {
+                            // Ambil ID dokumen dan masukkan ke dalam model
+                            barang.id = doc.id
+                            // Tambahkan ke list hanya jika bukan milik sendiri
+                            listBarang.add(barang)
+                        }
+                    }
+                }
+                // --- AKHIR PERUBAHAN ---
+
                 barangAdapter.notifyDataSetChanged()
             }
 
@@ -107,10 +125,8 @@ class PencarianFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-
-        // --- 4. HENTIKAN LISTENER SAAT FRAGMENT DIHANCURKAN ---
+        // Hentikan listener untuk mencegah memory leak
         firestoreListener?.remove()
-
         _binding = null
     }
 }

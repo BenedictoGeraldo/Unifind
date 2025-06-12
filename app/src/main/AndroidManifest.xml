@@ -15,6 +15,12 @@
         android:theme="@style/Theme.Unifind"
         tools:targetApi="31">
         <activity
+            android:name=".ui.profile.VerifikasiLaporanMasukActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.profile.LaporanMasukActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.LaporPenemuanActivity"
             android:exported="false" />
         <activity

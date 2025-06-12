@@ -1,5 +1,6 @@
 package com.androidprojek.unifind.ui.profile
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -36,6 +37,8 @@ class ProfilePencarianListFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.d("FragmentLifecycle", "ProfilePencarianListFragment - onViewCreated DIPANGGIL!")
+
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
@@ -51,8 +54,16 @@ class ProfilePencarianListFragment : Fragment() {
 
         // Implementasikan listener-nya
         pencarianAdapter.onLihatLaporanClickListener = { barang ->
-            // TODO: Buat Intent untuk pindah ke halaman daftar laporan penemuan untuk barang ini
-            Toast.makeText(context, "Membuka laporan untuk: ${barang.namaBarang}", Toast.LENGTH_SHORT).show()
+            // --- PERUBAHAN DI SINI ---
+            // Kita gunakan isNullOrEmpty() untuk memeriksa String?
+            if (!barang.id.isNullOrEmpty()) {
+                val intent = Intent(context, LaporanMasukActivity::class.java).apply {
+                    putExtra(LaporanMasukActivity.EXTRA_BARANG_ID, barang.id) // Kirim ID barang
+                }
+                startActivity(intent)
+            } else {
+                Toast.makeText(context, "Gagal mendapatkan ID postingan.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -75,12 +86,20 @@ class ProfilePencarianListFragment : Fragment() {
 
                 if (snapshots != null) {
                     listPencarian.clear()
+                    // --- PERUBAHAN LOGIKA DI SINI ---
+                    // Kita tidak langsung .toObjects(), tapi kita loop manual
                     for (doc in snapshots.documents) {
-                        val pencarian = doc.toObject(BarangModel::class.java) // Gunakan model "Pencarian"
-                        if (pencarian != null) {
-                            listPencarian.add(pencarian)
+                        // 1. Ubah dokumen menjadi objek BarangModel
+                        val barang = doc.toObject(BarangModel::class.java)
+                        if (barang != null) {
+                            // 2. Ambil ID dokumen dan masukkan ke field 'id' di model
+                            barang.id = doc.id
+
+                            // 3. Tambahkan objek yang sudah lengkap ke dalam list
+                            listPencarian.add(barang)
                         }
                     }
+                    // --- AKHIR PERUBAHAN ---
                     pencarianAdapter.notifyDataSetChanged()
                     binding.tvEmptyMyPencarian.visibility = if (listPencarian.isEmpty()) View.VISIBLE else View.GONE
                 }

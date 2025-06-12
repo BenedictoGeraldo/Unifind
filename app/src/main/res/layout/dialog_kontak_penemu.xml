@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="16dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_dialog_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kontak Penemu"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <ImageView
+            android:id="@+id/btn_close_dialog"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_close"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="4dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_dialog_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <LinearLayout
+                android:id="@+id/layout_instagram"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="12dp"
+                android:gravity="center_vertical"
+                android:background="@drawable/contact_item_background"
+                android:visibility="gone"
+                tools:visibility="visible">
+                <ImageView android:src="@drawable/ic_instagram" android:layout_width="24dp" android:layout_height="24dp"/>
+                <TextView android:id="@+id/tv_instagram" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="16dp" tools:text="\@username.ig"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_line"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="12dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
+                android:background="@drawable/contact_item_background"
+                android:visibility="gone"
+                tools:visibility="visible">
+                <ImageView android:src="@drawable/ic_line" android:layout_width="24dp" android:layout_height="24dp"/>
+                <TextView android:id="@+id/tv_line" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="16dp" tools:text="username.line"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_whatsapp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="12dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
+                android:background="@drawable/contact_item_background"
+                android:visibility="gone"
+                tools:visibility="visible">
+                <ImageView android:src="@drawable/ic_whatsapp" android:layout_width="24dp" android:layout_height="24dp"/>
+                <TextView android:id="@+id/tv_whatsapp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="16dp" tools:text="08123456789"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
