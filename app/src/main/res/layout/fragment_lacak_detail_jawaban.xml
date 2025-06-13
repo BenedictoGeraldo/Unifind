@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F9FBFC"
+    tools:context=".ui.profile.lacakformulir.LacakDetailJawabanFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar_detail_jawaban"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:navigationIcon="@drawable/ic_back_arrow"
+                app:title="Detail Jawaban Saya"
+                app:titleTextColor="@color/biru_tab" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <!-- Detail Jawaban Anda -->
+
+            <TextView
+                style="@style/FormLabel"
+                android:text="Nama Anda" />
+            <!-- ID Disesuaikan -->
+            <TextView
+                android:id="@+id/tv_lacak_detail_nama"
+                style="@style/FormValue"
+                tools:text="User B" />
+
+            <TextView
+                style="@style/FormLabel"
+                android:layout_marginTop="16dp"
+                android:text="NIM Anda" />
+            <!-- ID Disesuaikan -->
+            <TextView
+                android:id="@+id/tv_lacak_detail_nim"
+                style="@style/FormValue"
+                tools:text="2121212121" />
+
+            <TextView
+                style="@style/FormLabel"
+                android:layout_marginTop="16dp"
+                android:text="Nama Barang yang Diklaim" />
+            <!-- ID Disesuaikan -->
+            <TextView
+                android:id="@+id/tv_lacak_detail_nama_barang"
+                style="@style/FormValue"
+                tools:text="iPhone 18 Pro Max" />
+
+            <TextView
+                style="@style/FormLabel"
+                android:layout_marginTop="16dp"
+                android:text="Kategori" />
+            <!-- ID Disesuaikan -->
+            <TextView
+                android:id="@+id/tv_lacak_detail_kategori"
+                style="@style/FormValue"
+                tools:text="Handphone" />
+
+            <TextView
+                style="@style/FormLabel"
+                android:layout_marginTop="16dp"
+                android:text="Deskripsi Ciri-ciri" />
+            <!-- ID Disesuaikan -->
+            <TextView
+                android:id="@+id/tv_lacak_detail_deskripsi"
+                style="@style/FormValue"
+                android:lineSpacingExtra="4dp"
+                tools:text="Deskripsi lengkap dari barang yang diklaim oleh pengguna." />
+
+            <TextView
+                style="@style/FormLabel"
+                android:layout_marginTop="16dp"
+                android:text="Tanggal Hilang" />
+            <!-- ID Disesuaikan -->
+            <TextView
+                android:id="@+id/tv_lacak_detail_tanggal"
+                style="@style/FormValue"
+                tools:text="13 Juni 2025" />
+
+            <TextView
+                style="@style/FormLabel"
+                android:layout_marginTop="16dp"
+                android:text="Waktu Hilang" />
+            <!-- ID Disesuaikan -->
+            <TextView
+                android:id="@+id/tv_lacak_detail_waktu"
+                style="@style/FormValue"
+                tools:text="10:00 WIB" />
+
+            <TextView
+                style="@style/FormLabel"
+                android:layout_marginTop="16dp"
+                android:text="Lokasi Terakhir" />
+            <!-- ID Disesuaikan -->
+            <TextView
+                android:id="@+id/tv_lacak_detail_lokasi"
+                style="@style/FormValue"
+                tools:text="Gedung Rektorat" />
+
+            <TextView
+                style="@style/FormLabel"
+                android:layout_marginTop="16dp"
+                android:text="Foto Bukti Anda" />
+            <!-- ID Disesuaikan -->
+            <ImageView
+                android:id="@+id/iv_lacak_detail_foto"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="8dp"
+                android:background="#E0E0E0"
+                android:scaleType="centerCrop"
+                android:visibility="gone"
+                tools:src="@tools:sample/backgrounds/scenic"
+                android:contentDescription="Foto bukti Anda" />
+            <!-- ID Disesuaikan -->
+            <TextView
+                android:id="@+id/tv_lacak_detail_foto_kosong"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Anda tidak melampirkan foto."
+                android:gravity="center"
+                android:padding="24dp"
+                android:background="@drawable/bg_form_upload_area"/>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

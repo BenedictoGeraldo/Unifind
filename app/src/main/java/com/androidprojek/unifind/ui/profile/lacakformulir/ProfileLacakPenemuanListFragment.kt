@@ -6,21 +6,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.androidprojek.unifind.adapter.LacakFormulirAdapter
 import com.androidprojek.unifind.databinding.FragmentProfileLacakPenemuanListBinding
+import com.androidprojek.unifind.model.PenemuanKlaimModel
+import com.androidprojek.unifind.model.PenemuanLacakFormulirModel
+import com.androidprojek.unifind.model.PenemuanModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
-import com.google.firebase.firestore.Query
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class ProfileLacakPenemuanListFragment : Fragment() {
 
     private var _binding: FragmentProfileLacakPenemuanListBinding? = null
     private val binding get() = _binding!!
 
-    // TODO: Ganti dengan adapter dan model yang sesuai untuk melacak formulir
-    // private lateinit var lacakAdapter: LacakFormulirAdapter
-    // private val listLacak = mutableListOf<LacakModel>()
+    private lateinit var lacakAdapter: LacakFormulirAdapter
+    private val listLacak = mutableListOf<PenemuanLacakFormulirModel>()
 
     private val db = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
@@ -36,16 +41,16 @@ class ProfileLacakPenemuanListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // setupRecyclerView()
+        setupRecyclerView()
         listenToMyActiveClaims()
     }
 
     private fun setupRecyclerView() {
-        // lacakAdapter = LacakFormulirAdapter(listLacak)
-        // binding.rvLacakPenemuan.apply {
-        //     layoutManager = LinearLayoutManager(context)
-        //     adapter = lacakAdapter
-        // }
+        lacakAdapter = LacakFormulirAdapter(listLacak)
+        binding.rvLacakPenemuan.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = lacakAdapter
+        }
     }
 
     private fun listenToMyActiveClaims() {
@@ -58,29 +63,53 @@ class ProfileLacakPenemuanListFragment : Fragment() {
         binding.progressBarLacak.visibility = View.VISIBLE
         binding.tvEmptyLacak.visibility = View.GONE
 
-        // Query ke semua koleksi "klaim_barang" di seluruh aplikasi
-        firestoreListener = db.collectionGroup("klaim_barang")
-            // Filter 1: Ambil klaim yang dibuat oleh pengguna saat ini
+        val query = db.collectionGroup("klaim_barang")
             .whereEqualTo("uidPengklaim", currentUserUid)
-            // Filter 2: Ambil klaim yang statusnya masih aktif
             .whereEqualTo("statusKlaim", "Menunggu Konfirmasi")
-            .addSnapshotListener { snapshots, error ->
-                if (_binding == null) return@addSnapshotListener
-                binding.progressBarLacak.visibility = View.GONE
 
-                if (error != null) {
-                    Log.w("LacakFragment", "Listen failed.", error)
-                    return@addSnapshotListener
-                }
+        firestoreListener = query.addSnapshotListener { snapshots, error ->
+            if (_binding == null) return@addSnapshotListener
+            binding.progressBarLacak.visibility = View.GONE
 
-                if (snapshots != null) {
-                    // TODO: Isi data ke dalam list dan update adapter
-                    // listLacak.clear()
-                    // for (doc in snapshots.documents) { ... }
-                    // lacakAdapter.notifyDataSetChanged()
-                    binding.tvEmptyLacak.visibility = if (snapshots.isEmpty) View.VISIBLE else View.GONE
+            if (error != null) {
+                Log.w("LacakFragment", "Listen failed.", error)
+                return@addSnapshotListener
+            }
+
+            if (snapshots != null) {
+                viewLifecycleOwner.lifecycleScope.launch {
+                    val lacakItems = snapshots.documents.mapNotNull { claimDoc ->
+                        val postinganRef = claimDoc.reference.parent.parent
+                        if (postinganRef != null) {
+                            try {
+                                val postinganDoc = postinganRef.get().await()
+                                if (postinganDoc.exists()) {
+                                    val postingan = postinganDoc.toObject(PenemuanModel::class.java)
+                                    val klaim = claimDoc.toObject(PenemuanKlaimModel::class.java)
+
+                                    if (postingan != null && klaim != null) {
+                                        PenemuanLacakFormulirModel(
+                                            postId = postinganDoc.id,
+                                            namaBarangPostingan = postingan.namaBarang,
+                                            imageUrlPostingan = postingan.imageUrl,
+                                            namaPenemu = postingan.namaPelapor,
+                                            klaimId = claimDoc.id,
+                                            statusKlaim = klaim.statusKlaim,
+                                            detailKlaim = klaim
+                                        )
+                                    } else null
+                                } else null
+                            } catch (e: Exception) {
+                                Log.e("LacakFragment", "Gagal mengambil data postingan induk", e)
+                                null
+                            }
+                        } else null
+                    }
+                    lacakAdapter.updateData(lacakItems)
+                    binding.tvEmptyLacak.visibility = if (lacakItems.isEmpty()) View.VISIBLE else View.GONE
                 }
             }
+        }
     }
 
     override fun onDestroyView() {

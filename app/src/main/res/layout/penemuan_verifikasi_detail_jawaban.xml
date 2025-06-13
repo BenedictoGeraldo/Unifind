@@ -185,7 +185,7 @@
                     android:text="Terima"
                     android:textAllCaps="false"
                     app:backgroundTint="#3BB552"
-                    android:layout_marginBottom="60dp"
+                    android:layout_marginBottom="40dp"
                     android:layout_marginStart="8dp"/>
             </LinearLayout>
 

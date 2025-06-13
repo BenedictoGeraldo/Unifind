@@ -75,5 +75,6 @@ dependencies {
     implementation("com.tbuonomo:dotsindicator:5.0")
     //bentuk filter kategori di home
     implementation("com.google.android.flexbox:flexbox:3.0.0")
-
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.1")
 }
