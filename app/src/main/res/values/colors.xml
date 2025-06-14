@@ -14,4 +14,10 @@
     <color name="biru_laut">#2F90BD</color>
     <color name="biru_tab">#005B92</color>
     <color name="abu_tab">#6A7173</color>
+    <color name="green_100">#C8E6C9</color>
+    <color name="green_700">#388E3C</color>
+    <color name="red_100">#FFCDD2</color>
+    <color name="red_700">#D32F2F</color>
+    <color name="blue_100">#BBDEFB</color>
+    <color name="blue_700">#1976D2</color>
 </resources>

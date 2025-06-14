@@ -15,7 +15,7 @@ class ProfileLacakPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragme
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             // Untuk tab "Pencarian" (posisi 0), kita tampilkan Fragment kosong untuk sementara.
-            0 -> Fragment()
+            0 -> ProfileLacakPencarianListFragment()
 
             // Untuk tab "Penemuan" (posisi 1), kita tampilkan fragment yang sudah kita buat.
             1 -> ProfileLacakPenemuanListFragment()
