@@ -124,6 +124,9 @@ class AddTrackingFragment : Fragment() {
         idPerangkat: String,
         imageUrl: String?
     ) {
+        // Mengambil User Id Saat Ini
+        val userId = auth.currentUser?.uid
+
         // Buat data yang akan disimpan
         val trackingData = hashMapOf(
             "namaBarang" to namaBarang,
@@ -131,7 +134,8 @@ class AddTrackingFragment : Fragment() {
             "deskripsiBarang" to deskripsiBarang,
             "idPerangkat" to idPerangkat,
             "imageUrl" to imageUrl,
-            "timestamp" to System.currentTimeMillis()
+            "timestamp" to System.currentTimeMillis(),
+            "userId" to userId
         )
 
         // Simpan ke Firestore di collection "trackings"

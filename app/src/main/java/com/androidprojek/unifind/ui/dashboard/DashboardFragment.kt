@@ -1,6 +1,7 @@
 package com.androidprojek.unifind.ui.dashboard
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,11 +16,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.androidprojek.unifind.R
 import com.androidprojek.unifind.databinding.FragmentDashboardBinding
 import com.androidprojek.unifind.model.Tracking
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.launch
 
 class DashboardFragment : Fragment() {
@@ -74,12 +75,14 @@ class DashboardFragment : Fragment() {
             findNavController().navigate(R.id.action_navigation_pelacakan_to_addTrackingFragment)
         }
 
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+
         // Lifecycle-aware listener using callbackFlow
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(androidx.lifecycle.Lifecycle.State.STARTED) {
                 val snapshotFlow = callbackFlow {
                     val listenerRegistration = db.collection("trackings")
-                        .orderBy("timestamp", com.google.firebase.firestore.Query.Direction.DESCENDING)
+                        .whereEqualTo("userId", userId)
                         .addSnapshotListener { snapshot, e ->
                             if (e != null) {
                                 close(e)

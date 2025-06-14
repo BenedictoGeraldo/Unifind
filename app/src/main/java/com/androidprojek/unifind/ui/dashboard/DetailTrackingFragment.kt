@@ -31,7 +31,7 @@ class DetailTrackingFragment : Fragment(), OnMapReadyCallback {
         arguments?.let {
             idPerangkat = it.getString("idPerangkat")
         }
-        database = FirebaseDatabase.getInstance().getReference("tracking/device_001")
+        database = FirebaseDatabase.getInstance().getReference("tracking/$idPerangkat")
         Log.d("DEBUG_TRACKING", "Reference to database initialized")
     }
 
@@ -63,13 +63,13 @@ class DetailTrackingFragment : Fragment(), OnMapReadyCallback {
         // Pantau perubahan data realtime
         database.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                Log.d("DEBUG_TRACKING", "Snapshot exists: ${snapshot.exists()}")
-                Log.d("DEBUG_TRACKING", "Snapshot children count: ${snapshot.childrenCount}")
-                Log.d("DEBUG_TRACKING", "Snapshot value: ${snapshot.value}")
+//                Log.d("DEBUG_TRACKING", "Snapshot exists: ${snapshot.exists()}")
+//                Log.d("DEBUG_TRACKING", "Snapshot children count: ${snapshot.childrenCount}")
+//                Log.d("DEBUG_TRACKING", "Snapshot value: ${snapshot.value}")
 
                 val lat = snapshot.child("latitude").getValue(Double::class.java)
                 val lng = snapshot.child("longitude").getValue(Double::class.java)
-                Log.d("DEBUG_TRACKING", "Lat: $lat, Lng: $lng")
+//                Log.d("DEBUG_TRACKING", "Lat: $lat, Lng: $lng")
 
                 if (lat != null && lng != null) {
                     val newLocation = LatLng(lat, lng)
