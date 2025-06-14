@@ -16,6 +16,17 @@
             app:destination="@id/add_tracking_fragment" />
     </fragment>
     <fragment
+        android:id="@+id/detailTrackingFragment"
+        android:name="com.androidprojek.unifind.ui.dashboard.DetailTrackingFragment"
+        android:label="Detail Tracking">
+        <argument
+            android:name="idPerangkat"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_navigation_pelacakan_to_detailTrackingFragment"
+            app:destination="@id/detailTrackingFragment" />
+    </fragment>
+    <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.androidprojek.unifind.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"

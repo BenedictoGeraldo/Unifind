@@ -43,6 +43,7 @@ class AddTrackingFragment : Fragment() {
             binding.unggahBg.visibility = View.GONE
             // Simpan URI gambar untuk digunakan nanti (misalnya untuk upload ke server)
             // Anda bisa menyimpan URI ini di variabel atau ViewModel
+            imageUri = it
         }
     }
 
@@ -96,13 +97,15 @@ class AddTrackingFragment : Fragment() {
             if (imageUri != null) {
                 val storageRef = storage.reference.child("tracking_images/${UUID.randomUUID()}.jpg")
                 storageRef.putFile(imageUri!!)
-                    .addOnSuccessListener {
-                        // Dapatkan URL gambar setelah berhasil diunggah
-                        storageRef.downloadUrl.addOnSuccessListener { uri ->
-                            val imageUrl = uri.toString()
-                            // Simpan data ke Firestore
-                            saveToFirestore(namaBarang, kategoriBarang, deskripsiBarang, idPerangkat, imageUrl)
+                    .continueWithTask { task ->
+                        if (!task.isSuccessful) {
+                            task.exception?.let { throw it }
                         }
+                        storageRef.downloadUrl
+                    }
+                    .addOnSuccessListener { uri ->
+                        val imageUrl = uri.toString()
+                        saveToFirestore(namaBarang, kategoriBarang, deskripsiBarang, idPerangkat, imageUrl)
                     }
                     .addOnFailureListener { e ->
                         Toast.makeText(context, "Gagal mengunggah gambar: ${e.message}", Toast.LENGTH_SHORT).show()

@@ -9,74 +9,199 @@
     app:cardElevation="4dp"
     app:cardBackgroundColor="@android:color/white">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp">
 
-        <ImageView
-            android:id="@+id/iv_tracking_image"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:scaleType="centerCrop"
-            android:src="@android:drawable/ic_menu_gallery"
-            android:contentDescription="Gambar barang" />
-
-        <LinearLayout
-            android:id="@+id/text_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/iv_tracking_image"
-            android:layout_marginStart="16dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_nama_barang"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Nama Barang"
-                android:textSize="12sp"
-                android:textColor="#1F2B2D"
-                android:gravity="center_horizontal"
-                android:fontFamily="@font/plusjakartasans_bold" />
-
-            <TextView
-                android:id="@+id/tv_kategori_barang"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:textSize="8sp"
-                android:textColor="#1F2B2D"
-                android:fontFamily="@font/plusjakartasans_regular" />
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="9sp"
-                android:background="@drawable/lacak_button">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:text="Lacak"
-                    android:textColor="#FFFFFF"/>
-
-            </RelativeLayout>
-
-        </LinearLayout>
-
-        <!-- Ikon dropdown di pojok kanan atas -->
+        <!-- Dropdown button tetap di pojok kanan atas -->
         <ImageView
             android:id="@+id/btn_dropdown"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
             android:src="@drawable/arrow_down"
-            android:contentDescription="Dropdown"
-            android:padding="4dp"
-            android:clickable="true"
-            android:focusable="true" />
-    </RelativeLayout>
+            android:contentDescription="Toggle expand"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Layout compact -->
+        <LinearLayout
+            android:id="@+id/compact_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_dropdown"
+            android:layout_marginEnd="8dp">
+
+            <ImageView
+                android:id="@+id/iv_tracking_image"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:scaleType="centerCrop"
+                android:src="@android:drawable/ic_menu_gallery"
+                android:contentDescription="Gambar barang" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="16dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_nama_barang"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nama Barang"
+                    android:textSize="14sp"
+                    android:textColor="#1F2B2D"
+                    android:fontFamily="@font/plusjakartasans_bold" />
+
+                <TextView
+                    android:id="@+id/tv_kategori_barang"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Kategori"
+                    android:textSize="12sp"
+                    android:textColor="#1F2B2D"
+                    android:fontFamily="@font/plusjakartasans_regular" />
+
+                <RelativeLayout
+                    android:id="@+id/btn_lacak_compact"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/lacak_button"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="6dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="Lacak"
+                        android:textColor="#FFFFFF"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/plusjakartasans_bold" />
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Layout expanded -->
+        <LinearLayout
+            android:id="@+id/expanded_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/compact_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="12dp">
+
+            <!-- Expanded content seperti sebelumnya -->
+            <TextView
+                android:id="@+id/tv_nama_barang_expand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nama Barang"
+                android:textSize="16sp"
+                android:textColor="#1F2B2D"
+                android:fontFamily="@font/plusjakartasans_bold" />
+
+            <TextView
+                android:id="@+id/tv_kategori_barang_expand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kategori"
+                android:textSize="14sp"
+                android:textColor="#1F2B2D"
+                android:fontFamily="@font/plusjakartasans_regular" />
+
+            <ImageView
+                android:id="@+id/iv_tracking_image_expand"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:layout_marginTop="12dp"
+                android:contentDescription="Gambar barang besar" />
+
+            <!-- Info tambahan -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Deskripsi"
+                    android:textSize="14sp"
+                    android:textColor="#1F2B2D"
+                    android:fontFamily="@font/plusjakartasans_bold"/>
+
+                <TextView
+                    android:id="@+id/tv_deskripsi"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text=""
+                    android:textSize="14sp"
+                    android:textColor="#1F2B2D" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="ID Perangkat"
+                    android:textSize="14sp"
+                    android:textColor="#1F2B2D"
+                    android:fontFamily="@font/plusjakartasans_bold"/>
+
+                <TextView
+                    android:id="@+id/idPerangkat"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text=""
+                    android:textSize="14sp"
+                    android:textColor="#1F2B2D" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/btn_lacak_expand"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/lacak_button"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lacak"
+                    android:layout_centerInParent="true"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"/>
+            </RelativeLayout>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

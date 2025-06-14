@@ -53,7 +53,16 @@ class DashboardFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Setup RecyclerView
-        trackingAdapter = TrackingAdapter(trackingList)
+        trackingAdapter = TrackingAdapter(trackingList) { tracking ->
+            // Kirim idPerangkat ke fragment lain
+//            val action = DashboardFragmentDirections
+//                .actionNavigationPelacakanToDetailTrackingFragment(tracking.idPerangkat ?: "")
+//            findNavController().navigate(action)
+            val bundle = Bundle().apply {
+                putString("idPerangkat", tracking.idPerangkat)
+            }
+            findNavController().navigate(R.id.detailTrackingFragment, bundle)
+        }
         binding.rvTrackings.layoutManager = LinearLayoutManager(context)
         binding.rvTrackings.adapter = trackingAdapter
 

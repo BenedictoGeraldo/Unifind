@@ -77,4 +77,8 @@ dependencies {
     implementation("com.google.android.flexbox:flexbox:3.0.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.1")
+    // google maps
+    implementation("com.google.android.gms:play-services-maps:18.1.0")
+    // firebase realtime database
+    implementation("com.google.firebase:firebase-database-ktx")
 }
