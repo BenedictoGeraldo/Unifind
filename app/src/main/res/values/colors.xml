@@ -20,4 +20,32 @@
     <color name="red_700">#D32F2F</color>
     <color name="blue_100">#BBDEFB</color>
     <color name="blue_700">#1976D2</color>
+    <color name="green_success">#3BB552</color>
+    <color name="red_error">#E7524E</color>
+    <color name="grey_disabled">#E0E0E0</color>
+    <color name="grey_text">#9E9E9E</color>
+
+    <color name="status_diterima_bg">#0E8430</color>
+    <color name="kontak_diterima_bg">#73AFAE</color>
+
+    <!-- Warna untuk Status "Ditolak" -->
+    <color name="status_ditolak_bg">#B9132C</color>
+    <color name="kontak_ditolak_bg">#9BA1A2</color>
+
+    <!-- Warna untuk Teks Status -->
+    <color name="status_text_color">#FDFDFE</color>
+
+    <!-- Warna untuk Status "Menunggu" -->
+    <color name="grey_pending_bg">#EEEEEE</color>
+    <color name="grey_pending_text">#616161</color>
+
+    <!--lacak formulir-->
+    <!-- Warna untuk Status Diterima -->
+
+    <color name="status_ditolak_text">#B71C1C</color> <!-- Merah Tua untuk teks -->
+
+    <!-- Warna untuk Status Pending -->
+    <color name="status_menunggu_bg">#EEEEEE</color> <!-- Abu-abu untuk background chip -->
+    <color name="status_menunggu_text">#616161</color> <!-- Abu-abu Tua untuk teks -->
+
 </resources>

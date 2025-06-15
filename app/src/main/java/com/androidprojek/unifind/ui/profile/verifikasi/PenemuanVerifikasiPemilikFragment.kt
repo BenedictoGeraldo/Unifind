@@ -118,10 +118,14 @@ class PenemuanVerifikasiPemilikFragment : Fragment() {
 
     private fun navigateToDetailJawaban(klaim: PenemuanKlaimModel) {
         val bundle = Bundle().apply {
+            // Kita juga perlu mengirim postId agar di halaman detail kita tahu postingan mana yang di-update
+            putString("postId", postId)
             putParcelable("dataKlaim", klaim)
         }
         findNavController().navigate(R.id.action_verifikasiPemilik_to_detailJawaban, bundle)
     }
+
+    // Fungsi onLihatJawabanClicked dan onKontakClicked tidak lagi diperlukan di sini
 
     override fun onDestroyView() {
         super.onDestroyView()

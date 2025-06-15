@@ -20,5 +20,6 @@ data class PenemuanModel(
     val lokasiPenemuan: String? = null,
     val imageUrl: String? = null,
     val timestamp: Long? = 0L,
-    val uid: String? = null
+    val uid: String? = null,
+    val status: String? = "Dalam Pencarian"
 ) : Parcelable

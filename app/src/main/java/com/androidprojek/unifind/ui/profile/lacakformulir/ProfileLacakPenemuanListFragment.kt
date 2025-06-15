@@ -16,6 +16,7 @@ import com.androidprojek.unifind.model.PenemuanModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.Query
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
@@ -46,6 +47,8 @@ class ProfileLacakPenemuanListFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
+        // Logika ini sudah benar, menggunakan lambda untuk menangani klik.
+        // Kita akan sesuaikan navigasinya nanti.
         lacakAdapter = LacakFormulirAdapter(listLacak)
         binding.rvLacakPenemuan.apply {
             layoutManager = LinearLayoutManager(context)
@@ -63,9 +66,11 @@ class ProfileLacakPenemuanListFragment : Fragment() {
         binding.progressBarLacak.visibility = View.VISIBLE
         binding.tvEmptyLacak.visibility = View.GONE
 
+        // --- PERUBAHAN UTAMA DI SINI ---
+        // Kita hapus filter 'whereEqualTo("statusKlaim", "Menunggu Konfirmasi")'
+        // agar semua klaim milik pengguna (apapun statusnya) akan diambil.
         val query = db.collectionGroup("klaim_barang")
             .whereEqualTo("uidPengklaim", currentUserUid)
-            .whereEqualTo("statusKlaim", "Menunggu Konfirmasi")
 
         firestoreListener = query.addSnapshotListener { snapshots, error ->
             if (_binding == null) return@addSnapshotListener

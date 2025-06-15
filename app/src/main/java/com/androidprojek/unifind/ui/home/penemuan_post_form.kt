@@ -1,4 +1,4 @@
-package com.androidprojek.unifind.ui.home // Sesuaikan dengan package Anda
+package com.androidprojek.unifind.ui.home
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -13,7 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.androidprojek.unifind.R
-import com.androidprojek.unifind.databinding.PenemuanPostFormBinding // Nama binding sesuai nama file XML
+import com.androidprojek.unifind.databinding.PenemuanPostFormBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -30,16 +30,13 @@ class penemuan_post_form : Fragment() {
     private var imageUri: Uri? = null
     private val calendar = Calendar.getInstance()
 
-    // Inisialisasi Firebase
     private val db = FirebaseFirestore.getInstance()
     private val storage = FirebaseStorage.getInstance()
     private val auth = FirebaseAuth.getInstance()
 
-    // Launcher untuk memilih gambar dari galeri
     private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         uri?.let {
             imageUri = it
-            // Tampilkan gambar dan sembunyikan tombol upload
             binding.ivFotoBarang.setImageURI(it)
             binding.ivFotoBarang.visibility = View.VISIBLE
             binding.btnUnggahFoto.visibility = View.GONE
@@ -62,7 +59,7 @@ class penemuan_post_form : Fragment() {
     }
 
     private fun setupSpinner() {
-        val categories = resources.getStringArray(R.array.kategori_barang) // Pastikan array ini ada di arrays.xml
+        val categories = resources.getStringArray(R.array.kategori_barang_array)
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, categories)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerKategori.adapter = adapter
@@ -70,10 +67,10 @@ class penemuan_post_form : Fragment() {
 
     private fun setupClickListeners() {
         binding.btnBack.setOnClickListener { findNavController().navigateUp() }
-        binding.fieldTanggal.setOnClickListener { showDatePicker() } // Klik pada wrapper
-        binding.tvTanggalPenemuan.setOnClickListener { showDatePicker() } // Klik pada teks
-        binding.fieldWaktu.setOnClickListener { showTimePicker() } // Klik pada wrapper
-        binding.tvWaktuPenemuan.setOnClickListener { showTimePicker() } // Klik pada teks
+        binding.fieldTanggal.setOnClickListener { showDatePicker() }
+        binding.tvTanggalPenemuan.setOnClickListener { showDatePicker() }
+        binding.fieldWaktu.setOnClickListener { showTimePicker() }
+        binding.tvWaktuPenemuan.setOnClickListener { showTimePicker() }
         binding.btnUnggahFoto.setOnClickListener { pickImageLauncher.launch("image/*") }
         binding.btnBuatPostingan.setOnClickListener { validateAndPost() }
     }
@@ -121,7 +118,6 @@ class penemuan_post_form : Fragment() {
             return
         }
 
-        // Nonaktifkan tombol untuk mencegah klik ganda
         binding.btnBuatPostingan.isEnabled = false
         Toast.makeText(context, "Membuat postingan...", Toast.LENGTH_SHORT).show()
 
@@ -134,13 +130,12 @@ class penemuan_post_form : Fragment() {
             storageRef.putFile(it)
                 .addOnSuccessListener {
                     storageRef.downloadUrl.addOnSuccessListener { uri ->
-                        val imageUrl = uri.toString()
-                        saveDataToFirestore(imageUrl)
+                        saveDataToFirestore(uri.toString())
                     }
                 }
                 .addOnFailureListener { e ->
                     Toast.makeText(context, "Gagal mengunggah gambar: ${e.message}", Toast.LENGTH_SHORT).show()
-                    binding.btnBuatPostingan.isEnabled = true // Aktifkan kembali tombol jika gagal
+                    binding.btnBuatPostingan.isEnabled = true
                 }
         }
     }
@@ -159,7 +154,9 @@ class penemuan_post_form : Fragment() {
             "waktuPenemuan" to binding.tvWaktuPenemuan.text.toString().trim(),
             "lokasiPenemuan" to binding.edtLokasi.text.toString().trim(),
             "imageUrl" to imageUrl,
-            "timestamp" to System.currentTimeMillis()
+            "timestamp" to System.currentTimeMillis(),
+            // --- PASTIKAN BARIS INI ADA ---
+            "status" to "Dalam Pencarian"
         )
 
         db.collection("form_penemuan")
@@ -170,7 +167,7 @@ class penemuan_post_form : Fragment() {
             }
             .addOnFailureListener { e ->
                 Toast.makeText(context, "Gagal membuat postingan: ${e.message}", Toast.LENGTH_SHORT).show()
-                binding.btnBuatPostingan.isEnabled = true // Aktifkan kembali tombol jika gagal
+                binding.btnBuatPostingan.isEnabled = true
             }
     }
 

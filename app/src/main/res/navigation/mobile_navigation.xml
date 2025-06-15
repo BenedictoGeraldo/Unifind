@@ -115,12 +115,15 @@
         android:id="@+id/profileLacakFormulirFragment"
         android:name="com.androidprojek.unifind.ui.profile.lacakformulir.ProfileLacakFormulirFragment"
         android:label="Lacak Formulir"
-        tools:layout="@layout/fragment_profile_lacak_formulir">
+        tools:layout="@layout/fragment_profile_lacak_formulir" >
+
         <!-- "Jembatan" dari Lacak Formulir ke Detail Jawaban -->
         <action
             android:id="@+id/action_lacakFormulir_to_detailJawaban"
             app:destination="@id/lacakDetailJawabanFragment" />
+
     </fragment>
+
     <fragment
         android:id="@+id/lacakDetailJawabanFragment"
         android:name="com.androidprojek.unifind.ui.profile.lacakformulir.LacakDetailJawabanFragment"

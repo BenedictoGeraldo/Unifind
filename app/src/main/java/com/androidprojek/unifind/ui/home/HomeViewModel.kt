@@ -33,13 +33,11 @@ class HomeViewModel : ViewModel() {
     private fun listenToFirestoreChanges() {
         val currentUserUid = auth.currentUser?.uid
 
-        if (currentUserUid == null) {
-            _originalList.value = emptyList()
-            return
-        }
-
+        // --- PERUBAHAN UTAMA DI SINI ---
+        // 1. Kita hanya meminta postingan yang statusnya masih aktif, TANPA diurutkan.
+        // Ini membuat query ke database menjadi sangat sederhana dan andal.
         db.collection("form_penemuan")
-            .whereNotEqualTo("uid", currentUserUid)
+            .whereEqualTo("status", "Dalam Pencarian")
             .addSnapshotListener { snapshots, error ->
                 if (error != null) {
                     Log.w("HomeViewModel", "Gagal mendengarkan data Firestore.", error)
@@ -48,17 +46,26 @@ class HomeViewModel : ViewModel() {
 
                 if (snapshots != null) {
                     val penemuanList = mutableListOf<PenemuanModel>()
-                    // --- PERUBAHAN UTAMA DI SINI ---
                     for (document in snapshots.documents) {
-                        // 1. Ubah dokumen menjadi objek PenemuanModel
                         val item = document.toObject(PenemuanModel::class.java)
                         if (item != null) {
-                            // 2. Ambil ID dokumen dan masukkan ke dalam properti 'id'
                             item.id = document.id
                             penemuanList.add(item)
                         }
                     }
-                    _originalList.value = penemuanList
+
+                    // 2. Lakukan pengurutan di dalam aplikasi, bukan di database.
+                    penemuanList.sortByDescending { it.timestamp }
+
+                    // 3. Filter secara manual untuk membuang postingan milik pengguna saat ini.
+                    val listUntukDitampilkan = if (currentUserUid != null) {
+                        penemuanList.filter { it.uid != currentUserUid }
+                    } else {
+                        penemuanList // Jika tidak login, tampilkan semua
+                    }
+
+                    _originalList.value = listUntukDitampilkan
+
                 } else {
                     _originalList.value = emptyList()
                 }

@@ -1,7 +1,9 @@
 package com.androidprojek.unifind.adapter
 
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.androidprojek.unifind.R
 import com.androidprojek.unifind.databinding.PenemuanItemLacakFormulirBinding
@@ -22,6 +24,26 @@ class LacakFormulirAdapter(
                 .load(item.imageUrlPostingan)
                 .placeholder(R.drawable.baseline_image_24)
                 .into(binding.ivLacakFotoBarang)
+
+            // --- LOGIKA UNTUK MENGUBAH WARNA STATUS CHIP ---
+            val context = itemView.context
+            when (item.statusKlaim) {
+                "Diterima" -> {
+                    // Tampilan untuk status DITERIMA
+                    binding.chipLacakStatus.chipBackgroundColor = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.status_diterima_bg))
+                    binding.chipLacakStatus.setTextColor(ContextCompat.getColor(context, R.color.status_text_color))
+                }
+                "Ditolak" -> {
+                    // Tampilan untuk status DITOLAK
+                    binding.chipLacakStatus.chipBackgroundColor = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.status_ditolak_bg))
+                    binding.chipLacakStatus.setTextColor(ContextCompat.getColor(context, R.color.status_text_color))
+                }
+                else -> { // Default untuk "Menunggu Konfirmasi"
+                    // Tampilan DEFAULT
+                    binding.chipLacakStatus.chipBackgroundColor = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.grey_pending_bg))
+                    binding.chipLacakStatus.setTextColor(ContextCompat.getColor(context, R.color.grey_pending_text))
+                }
+            }
         }
     }
 
