@@ -7,6 +7,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -71,9 +72,16 @@ class LaporPenemuanActivity : AppCompatActivity() {
         // Setup UI dan listener
         setupToolbar()
         getIntentData()
-        fetchFinderProfile() // Ambil profil si penemu (pengguna saat ini)
         setupDateTimePickers()
         setupClickListeners()
+
+        // --- PERUBAHAN LOGIKA UTAMA ---
+        // 1. Nonaktifkan tombol kirim di awal dan tampilkan loading profil
+        setSubmitButtonEnabled(false)
+        binding.progressBar.visibility = View.VISIBLE
+
+        // 2. Ambil profil pengguna
+        fetchFinderProfile()
     }
 
     private fun setupToolbar() {
@@ -94,18 +102,45 @@ class LaporPenemuanActivity : AppCompatActivity() {
         binding.tvNamaPelaporAsli.text = "Pelapor: $namaPelapor"
     }
 
+    // --- FUNGSI INI SEKARANG MENGONTROL UI ---
     private fun fetchFinderProfile() {
-        val currentUser = auth.currentUser ?: return
+        val currentUser = auth.currentUser
+        if (currentUser == null) {
+            Toast.makeText(this, "Sesi tidak valid, silakan login ulang.", Toast.LENGTH_LONG).show()
+            finish()
+            return
+        }
+
+        // Tampilkan loading saat proses dimulai
+        binding.progressBar.visibility = View.VISIBLE
+        setSubmitButtonEnabled(false) // Nonaktifkan tombol selama loading
+
         db.collection("users").document(currentUser.uid).get()
             .addOnSuccessListener { document ->
+                binding.progressBar.visibility = View.GONE // Sembunyikan loading
                 if (document.exists()) {
+                    // --- PERBAIKAN DI SINI ---
+                    // Gunakan Elvis Operator (?:) untuk memberikan nilai default jika data dari Firestore null
                     penemuNama = document.getString("nama") ?: "Tanpa Nama"
                     penemuNim = document.getString("nim") ?: "Tanpa NIM"
-                    // --- AMBIL DATA KONTAK DI SINI ---
+
+                    // Untuk kontak, karena variabelnya sudah nullable (String?), kita tidak perlu Elvis Operator
                     penemuInstagram = document.getString("instagram")
                     penemuLine = document.getString("line")
                     penemuWhatsapp = document.getString("whatsapp")
+
+                    // JIKA SUKSES, AKTIFKAN KEMBALI TOMBOL KIRIM
+                    setSubmitButtonEnabled(true)
+                    Log.d("ProfileFetch", "Profil berhasil dimuat: $penemuNama")
+                } else {
+                    Toast.makeText(this, "Data profil tidak ditemukan.", Toast.LENGTH_SHORT).show()
+                    // Biarkan tombol nonaktif jika profil tidak ditemukan
                 }
+            }
+            .addOnFailureListener { e ->
+                binding.progressBar.visibility = View.GONE // Sembunyikan loading
+                Toast.makeText(this, "Gagal memuat profil: ${e.message}", Toast.LENGTH_SHORT).show()
+                // Biarkan tombol nonaktif jika gagal
             }
     }
 
@@ -194,9 +229,10 @@ class LaporPenemuanActivity : AppCompatActivity() {
 
     private fun saveReportToFirestore(imageUrls: List<String>) {
         val penemu = auth.currentUser
-        if (penemu == null || idBarangAsli == null || uidPelaporAsli == null) {
+        // Lakukan validasi yang lebih ketat di sini
+        if (penemu == null || idBarangAsli == null || uidPelaporAsli == null || penemuNama == null) {
             setLoading(false)
-            Toast.makeText(this, "Gagal menyimpan, data postingan asli tidak valid.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Gagal menyimpan, data pengguna tidak lengkap.", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -204,12 +240,11 @@ class LaporPenemuanActivity : AppCompatActivity() {
             idBarangHilang = idBarangAsli!!,
             uidPelaporAsli = uidPelaporAsli!!,
             penemuUid = penemu.uid,
-            penemuNama = penemuNama,
-            penemuNim = penemuNim,
-            // --- MASUKKAN DATA KONTAK KE MODEL ---
-            penemuInstagram = penemuInstagram,
-            penemuLine = penemuLine,
-            penemuWhatsapp = penemuWhatsapp,
+            penemuNama = this.penemuNama!!,
+            penemuNim = this.penemuNim ?: "", // NIM boleh kosong
+            penemuInstagram = this.penemuInstagram,
+            penemuLine = this.penemuLine,
+            penemuWhatsapp = this.penemuWhatsapp,
             deskripsiTambahan = binding.etDeskripsiTambahan.text.toString().trim(),
             tanggalTemuan = binding.tvTanggalTemuan.text.toString(),
             waktuTemuan = binding.tvWaktuTemuan.text.toString(),
@@ -218,9 +253,8 @@ class LaporPenemuanActivity : AppCompatActivity() {
             statusLaporan = "Menunggu Verifikasi"
         )
 
-        // --- INI BAGIAN KUNCINYA: Menyimpan ke Subcollection ---
         db.collection("barangHilang").document(idBarangAsli!!)
-            .collection("laporanPenemuan") // Buat subcollection di bawah dokumen barang hilang
+            .collection("laporanPenemuan")
             .add(laporan)
             .addOnSuccessListener {
                 setLoading(false)
@@ -235,6 +269,13 @@ class LaporPenemuanActivity : AppCompatActivity() {
 
     private fun setLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-        binding.btnKirimLaporan.isEnabled = !isLoading
+        // Sekarang setLoading hanya mengatur ProgressBar untuk proses upload gambar
+    }
+
+    // --- TAMBAHKAN FUNGSI BARU INI ---
+    private fun setSubmitButtonEnabled(isEnabled: Boolean) {
+        binding.btnKirimLaporan.isEnabled = isEnabled
+        // Beri efek visual agar terlihat nonaktif
+        binding.btnKirimLaporan.alpha = if (isEnabled) 1.0f else 0.5f
     }
 }
