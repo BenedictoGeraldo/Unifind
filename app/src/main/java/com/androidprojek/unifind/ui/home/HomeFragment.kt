@@ -7,9 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels // <-- UBAH IMPORT INI
+import androidx.fragment.app.activityViewModels
+import com.androidprojek.unifind.R
 import com.androidprojek.unifind.databinding.FragmentHomeBinding
 import com.androidprojek.unifind.ui.home.adapter.HomePagerAdapter
+import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
 
 class HomeFragment : Fragment() {
@@ -17,10 +19,6 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     internal val binding get() = _binding!!
 
-    // --- PERUBAHAN UTAMA DI SINI ---
-    // Ganti 'viewModels()' menjadi 'activityViewModels()'.
-    // Ini memastikan instance ViewModel ini SAMA PERSIS dengan yang digunakan
-    // oleh PenemuanFragment, karena keduanya berbagi Activity yang sama.
     private val homeViewModel: HomeViewModel by activityViewModels()
 
     private val tabTitles = arrayOf("Pencarian", "Penemuan")
@@ -38,10 +36,29 @@ class HomeFragment : Fragment() {
 
         setupTabs()
         setupSearchListener()
+        observeViewModel()
 
         binding.btnFilter.setOnClickListener {
             val filterDialog = FilterDialogFragment()
             filterDialog.show(childFragmentManager, "FilterDialog")
+        }
+    }
+
+    private fun observeViewModel() {
+        // Amati LiveData userProfileImageUrl
+        homeViewModel.userProfileImageUrl.observe(viewLifecycleOwner) { imageUrl ->
+            // Gunakan Glide untuk memuat gambar dari URL
+            if (!imageUrl.isNullOrEmpty()) {
+                Glide.with(this)
+                    .load(imageUrl)
+                    .placeholder(R.drawable.baseline_person_outline_24) // Gambar default saat loading
+                    .error(R.drawable.baseline_person_outline_24)     // Gambar default jika gagal
+                    .circleCrop() // Membuat gambar menjadi bulat
+                    .into(binding.ivProfile) // Masukkan ke ImageView Anda
+            } else {
+                // Jika URL kosong atau null, tampilkan gambar default
+                binding.ivProfile.setImageResource(R.drawable.baseline_person_outline_24)
+            }
         }
     }
 
@@ -59,7 +76,6 @@ class HomeFragment : Fragment() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                // Kirim query terbaru ke ViewModel bersama
                 homeViewModel.setSearchQuery(s.toString())
             }
 

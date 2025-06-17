@@ -1,6 +1,7 @@
 package com.androidprojek.unifind.ui.home
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,6 +15,9 @@ class HomeViewModel : ViewModel() {
     private val db = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
 
+    private val _userProfileImageUrl = MutableLiveData<String?>()
+    val userProfileImageUrl: LiveData<String?> = _userProfileImageUrl
+
     // DATA SUMBER (INPUTS)
     private val _originalList = MutableLiveData<List<PenemuanModel>>()
     private val _searchQuery = MutableLiveData<String>("")
@@ -23,11 +27,29 @@ class HomeViewModel : ViewModel() {
     val filteredPenemuanList = MediatorLiveData<List<PenemuanModel>>()
 
     init {
+        fetchCurrentUserProfile()
         listenToFirestoreChanges()
 
         filteredPenemuanList.addSource(_originalList) { applyFiltersAndSearch() }
         filteredPenemuanList.addSource(_searchQuery) { applyFiltersAndSearch() }
         filteredPenemuanList.addSource(_activeCategories) { applyFiltersAndSearch() }
+    }
+
+    fun fetchCurrentUserProfile() {
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            db.collection("users").document(currentUser.uid).get()
+                .addOnSuccessListener { document ->
+                    if (document.exists()) {
+                        val photoUrl = document.getString("photoUrl")
+                        _userProfileImageUrl.value = photoUrl
+                        Log.d("HomeViewModel", "URL Foto Profil berhasil diambil: $photoUrl")
+                    }
+                }
+                .addOnFailureListener { e ->
+                    Log.w("HomeViewModel", "Gagal mengambil foto profil.", e)
+                }
+        }
     }
 
     private fun listenToFirestoreChanges() {
