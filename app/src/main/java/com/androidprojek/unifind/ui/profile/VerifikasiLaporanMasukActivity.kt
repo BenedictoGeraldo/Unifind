@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.androidprojek.unifind.R
 import com.androidprojek.unifind.adapter.ImageSliderAdapter
 import com.androidprojek.unifind.databinding.ActivityVerifikasiLaporanMasukBinding
 import com.androidprojek.unifind.model.LaporanPenemuanModel
@@ -25,6 +26,7 @@ class VerifikasiLaporanMasukActivity : AppCompatActivity() {
         binding = ActivityVerifikasiLaporanMasukBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Ambil data laporan LENGKAP dari intent (karena sudah dibuat Parcelable)
         laporan = if (Build.VERSION.SDK_INT >= 33) {
             intent.getParcelableExtra(EXTRA_LAPORAN, LaporanPenemuanModel::class.java)
         } else {
@@ -39,7 +41,8 @@ class VerifikasiLaporanMasukActivity : AppCompatActivity() {
         }
 
         setupToolbar()
-        bindDataToViews()
+        // Cukup panggil satu fungsi untuk menampilkan semua data yang sudah kita miliki
+        bindDataToViews(laporan!!)
         setupActionButtons()
     }
 
@@ -47,25 +50,44 @@ class VerifikasiLaporanMasukActivity : AppCompatActivity() {
         binding.topAppBar.setNavigationOnClickListener { finish() }
     }
 
-    private fun bindDataToViews() {
-        laporan?.let {
-            binding.tvDetailWaktuTemuan.text = "Ditemukan pada ${it.tanggalTemuan}, pukul ${it.waktuTemuan}"
-            binding.tvDetailLokasiTemuan.text = "Di ${it.lokasiTemuan}"
-            binding.tvDetailDeskripsiPenemu.text = it.deskripsiTambahan.ifEmpty { "Tidak ada deskripsi tambahan." }
+    // --- FUNGSI INI SEKARANG MENAMPILKAN SEMUA DATA DARI OBJEK 'laporan' ---
+    private fun bindDataToViews(laporan: LaporanPenemuanModel) {
+        binding.apply {
+            // Mengisi data penemu
+            tvVerifikasiNamaPenemu.text = laporan.penemuNama
+            tvVerifikasiNimPenemu.text = laporan.penemuNim
 
-            if (it.fotoLaporanUris.isNotEmpty()) {
-                binding.viewPagerBukti.adapter = ImageSliderAdapter(it.fotoLaporanUris)
-                binding.dotsIndicatorBukti.attachTo(binding.viewPagerBukti)
+            // Mengisi data detail laporan penemuan
+            tvVerifikasiTanggal.text = laporan.tanggalTemuan
+            tvVerifikasiWaktu.text = laporan.waktuTemuan
+            tvVerifikasiLokasi.text = laporan.lokasiTemuan
+            tvVerifikasiDeskripsi.text = laporan.deskripsiTambahan.ifEmpty { "Tidak ada deskripsi tambahan." }
+
+            // Field-field ini tidak memiliki data di LaporanPenemuanModel, jadi kita sembunyikan saja
+            // atau Anda bisa hapus dari file XML jika mau.
+            tvVerifikasiNamaBarang.visibility = View.GONE
+            findViewById<View>(R.id.label_nama_barang).visibility = View.GONE // Asumsikan Anda memberi ID pada labelnya
+            tvVerifikasiKategori.visibility = View.GONE
+            findViewById<View>(R.id.label_kategori).visibility = View.GONE // Asumsikan Anda memberi ID pada labelnya
+
+            // Logika untuk menampilkan foto bukti atau teks "kosong"
+            if (laporan.fotoLaporanUris.isNotEmpty()) {
+                viewPagerBukti.visibility = View.VISIBLE
+                dotsIndicatorBukti.visibility = View.VISIBLE
+                tvFotoBuktiKosong.visibility = View.GONE
+
+                viewPagerBukti.adapter = ImageSliderAdapter(laporan.fotoLaporanUris)
+                dotsIndicatorBukti.attachTo(viewPagerBukti)
             } else {
-                binding.viewPagerBukti.visibility = View.GONE
-                binding.dotsIndicatorBukti.visibility = View.GONE
+                viewPagerBukti.visibility = View.GONE
+                dotsIndicatorBukti.visibility = View.GONE
+                tvFotoBuktiKosong.visibility = View.VISIBLE
             }
         }
     }
 
     private fun setupActionButtons() {
         binding.btnTolak.setOnClickListener {
-            // Memanggil fungsi yang sama, hanya dengan status "Ditolak"
             updateStatusLaporan("Ditolak")
         }
         binding.btnSetujui.setOnClickListener {
@@ -73,53 +95,30 @@ class VerifikasiLaporanMasukActivity : AppCompatActivity() {
         }
     }
 
-    // --- FUNGSI INI DIMODIFIKASI SECARA TOTAL ---
     private fun updateStatusLaporan(newStatus: String) {
-        setLoading(true) // Tampilkan loading saat proses dimulai
-
-        // Validasi ID
         if (laporan?.id.isNullOrEmpty() || laporan?.idBarangHilang.isNullOrEmpty()) {
             Toast.makeText(this, "ID Laporan atau Barang tidak valid.", Toast.LENGTH_SHORT).show()
-            setLoading(false)
             return
         }
 
-        // 1. Buat instance Batched Write
-        val batch = db.batch()
-
-        // 2. Siapkan referensi ke dokumen Laporan
-        val laporanRef = db.collection("barangHilang").document(laporan!!.idBarangHilang)
+        val reportRef = db.collection("barangHilang").document(laporan!!.idBarangHilang)
             .collection("laporanPenemuan").document(laporan!!.id!!)
 
-        // 3. Tambahkan operasi update status laporan ke dalam batch
-        batch.update(laporanRef, "statusLaporan", newStatus)
+        val batch = db.batch()
+        batch.update(reportRef, "statusLaporan", newStatus)
 
-        // 4. JIKA laporan disetujui, tambahkan juga operasi update status barang utama
         if (newStatus == "Disetujui") {
-            // Siapkan referensi ke dokumen Barang Hilang utama
             val barangRef = db.collection("barangHilang").document(laporan!!.idBarangHilang)
-            // Tambahkan operasi update status postingan ke dalam batch
             batch.update(barangRef, "status", "Ditemukan")
         }
 
-        // 5. Jalankan semua operasi di dalam batch
         batch.commit()
             .addOnSuccessListener {
-                setLoading(false)
-                Toast.makeText(this, "Proses berhasil!", Toast.LENGTH_LONG).show()
-                finish() // Kembali ke halaman sebelumnya
+                Toast.makeText(this, "Laporan berhasil diubah menjadi '$newStatus'", Toast.LENGTH_LONG).show()
+                finish()
             }
             .addOnFailureListener { e ->
-                setLoading(false)
                 Toast.makeText(this, "Gagal mengupdate status: ${e.message}", Toast.LENGTH_SHORT).show()
             }
-    }
-
-    // Fungsi helper untuk menampilkan/menyembunyikan loading
-    private fun setLoading(isLoading: Boolean) {
-        // Anda mungkin perlu menambahkan ProgressBar di layout XML Anda
-        // binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-        binding.btnSetujui.isEnabled = !isLoading
-        binding.btnTolak.isEnabled = !isLoading
     }
 }

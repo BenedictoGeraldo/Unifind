@@ -21,6 +21,11 @@ data class LaporanPenemuanModel(
     val penemuInstagram: String? = null,
     val penemuLine: String? = null,
     val penemuWhatsapp: String? = null,
+    val penemuPhotoUrl: String? = null,
+
+    // --- TAMBAHKAN DUA FIELD INI ---
+    val namaBarangPostingan: String? = null,
+    val kategoriPostingan: String? = null,
 
     // Info Laporan Penemuan
     val deskripsiTambahan: String = "",

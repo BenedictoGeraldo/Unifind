@@ -1,86 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="16dp"
     android:layout_marginVertical="8dp"
-    app:cardCornerRadius="16dp"
-    app:cardElevation="4dp"
-    app:strokeWidth="0dp">
+    android:layout_marginHorizontal="16dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="2dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp">
 
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_penemu_profile"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/baseline_person_outline_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/tv_nama_penemu"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:textSize="16sp"
+            android:layout_marginStart="16dp"
             android:textColor="@android:color/black"
+            android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:text="Nama Penemu"/>
+            app:layout_constraintEnd_toStartOf="@+id/chip_status_laporan"
+            app:layout_constraintStart_toEndOf="@+id/iv_penemu_profile"
+            app:layout_constraintTop_toTopOf="@+id/iv_penemu_profile"
+            tools:text="Nama Penemu" />
 
         <TextView
             android:id="@+id/tv_nim_penemu"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_nama_penemu"
-            app:layout_constraintEnd_toEndOf="@id/tv_nama_penemu"
-            tools:text="NIM Penemu"/>
+            app:layout_constraintEnd_toEndOf="@+id/tv_nama_penemu"
+            app:layout_constraintStart_toStartOf="@+id/tv_nama_penemu"
+            app:layout_constraintTop_toBottomOf="@+id/tv_nama_penemu"
+            tools:text="NIM Penemu" />
 
-        <TextView
-            android:id="@+id/tv_status_laporan"
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_status_laporan"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:text="Sedang diverifikasi"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_nama_penemu" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_lihat_detail_laporan"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="Lihat Jawaban"
+            android:textAllCaps="false"
+            app:backgroundTint="#FFA726"
+            app:cornerRadius="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_penemu_profile" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:textStyle="bold"
-            android:textColor="@color/blue_500"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_nim_penemu"
-            tools:text="Status: Menunggu Verifikasi"/>
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@id/tv_status_laporan"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_hubungi_penemu"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Hubungi"
-                android:backgroundTint="@color/blue_500"
-                app:cornerRadius="8dp"
-                android:textAllCaps="false"
-                android:layout_marginEnd="8dp"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_lihat_detail_laporan"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Lihat Detail"
-                android:backgroundTint="@color/blue_500"
-                app:cornerRadius="8dp"
-                android:textAllCaps="false"
-                android:layout_marginStart="8dp"/>
-
-        </LinearLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_hubungi_penemu"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:text="Kontak"
+            android:textAllCaps="false"
+            android:textColor="#888888"
+            app:cornerRadius="8dp"
+            app:icon="@drawable/ic_contact_person"
+            app:iconTint="#888888"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_lihat_detail_laporan"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/guideline"
+            app:layout_constraintTop_toTopOf="@+id/btn_lihat_detail_laporan" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>
