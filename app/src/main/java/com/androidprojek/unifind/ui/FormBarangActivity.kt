@@ -11,10 +11,12 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider // <-- PASTIKAN IMPORT INI ADA
 import com.androidprojek.unifind.R
 import com.androidprojek.unifind.databinding.ActivityFormBarangBinding
 import com.androidprojek.unifind.model.BarangModel
-import com.androidprojek.unifind.model.UserModel // <-- Pastikan UserModel di-import
+import com.androidprojek.unifind.model.UserModel
+import com.androidprojek.unifind.viewmodel.NotificationMainViewModel // <-- PASTIKAN IMPORT INI ADA
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -31,7 +33,9 @@ class FormBarangActivity : AppCompatActivity() {
     private lateinit var storage: FirebaseStorage
     private lateinit var auth: FirebaseAuth
 
-    // --- PERUBAHAN 1: Tambahkan variabel untuk semua data profil ---
+    // <-- PERUBAHAN 1: Deklarasikan ViewModel
+    private lateinit var sharedViewModel: NotificationMainViewModel
+
     private var currentUserProfile: UserModel? = null
 
     companion object {
@@ -47,13 +51,15 @@ class FormBarangActivity : AppCompatActivity() {
         storage = FirebaseStorage.getInstance()
         auth = FirebaseAuth.getInstance()
 
+        // <-- PERUBAHAN 2: Inisialisasi ViewModel
+        sharedViewModel = ViewModelProvider(this).get(NotificationMainViewModel::class.java)
+
         fetchUserProfile()
         setupSpinner()
         setupDateTimePickers()
         setupButtonListeners()
     }
 
-    // --- PERUBAHAN 2: fetchUserProfile sekarang mengambil seluruh objek UserModel ---
     private fun fetchUserProfile() {
         val user = auth.currentUser
         if (user == null) {
@@ -62,16 +68,15 @@ class FormBarangActivity : AppCompatActivity() {
             return
         }
 
-        setLoading(true) // Tampilkan loading saat mengambil profil
+        setLoading(true)
         db.collection("users").document(user.uid).get()
             .addOnSuccessListener { document ->
                 if (document.exists()) {
-                    // Simpan seluruh objek profil ke dalam variabel
                     currentUserProfile = document.toObject(UserModel::class.java)
                 } else {
                     Toast.makeText(this, "Data profil tidak ditemukan.", Toast.LENGTH_SHORT).show()
                 }
-                setLoading(false) // Sembunyikan loading setelah selesai
+                setLoading(false)
             }
             .addOnFailureListener {
                 setLoading(false)
@@ -79,10 +84,8 @@ class FormBarangActivity : AppCompatActivity() {
             }
     }
 
-    // --- PERUBAHAN 3: saveDataToFirestore sekarang menggunakan data lengkap dari profil ---
     private fun saveDataToFirestore(imageUrls: List<String>) {
         val currentUser = auth.currentUser
-        // Pastikan profil dan user tidak null
         if (currentUser == null || currentUserProfile == null) {
             setLoading(false)
             Toast.makeText(this, "Tidak bisa menyimpan, data pengguna tidak lengkap.", Toast.LENGTH_SHORT).show()
@@ -90,7 +93,6 @@ class FormBarangActivity : AppCompatActivity() {
         }
 
         val barang = BarangModel(
-            // --- Mengisi data pelapor dari objek currentUserProfile ---
             pelaporUid = currentUser.uid,
             nama = currentUserProfile!!.nama,
             nim = currentUserProfile!!.nim,
@@ -98,8 +100,6 @@ class FormBarangActivity : AppCompatActivity() {
             pelaporInstagram = currentUserProfile!!.instagram,
             pelaporLine = currentUserProfile!!.line,
             pelaporWhatsapp = currentUserProfile!!.whatsapp,
-
-            // --- Sisa data diambil dari form seperti biasa ---
             namaBarang = binding.etNamaBarang.text.toString(),
             kategori = binding.spinnerKategori.selectedItem.toString(),
             deskripsi = binding.etDeskripsi.text.toString(),
@@ -112,6 +112,9 @@ class FormBarangActivity : AppCompatActivity() {
 
         db.collection("barangHilang").add(barang)
             .addOnSuccessListener {
+                // <-- PERUBAHAN 3: Panggil ViewModel untuk membuat notifikasi
+                sharedViewModel.addSearchSuccessNotification()
+
                 setLoading(false)
                 Toast.makeText(this, "Laporan berhasil dibuat!", Toast.LENGTH_LONG).show()
                 finish()
@@ -122,7 +125,7 @@ class FormBarangActivity : AppCompatActivity() {
             }
     }
 
-    // ... (Sisa fungsi lainnya: setupSpinner, setupButtonListeners, onActivityResult, dll. tidak ada perubahan) ...
+    // ... (Sisa fungsi lainnya tidak perlu diubah) ...
     private fun setupSpinner() {
         ArrayAdapter.createFromResource(this, R.array.kategori_barang, android.R.layout.simple_spinner_item).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)

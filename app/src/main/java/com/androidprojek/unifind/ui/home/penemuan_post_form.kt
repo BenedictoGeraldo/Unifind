@@ -11,9 +11,11 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels // <-- PASTIKAN IMPORT INI ADA
 import androidx.navigation.fragment.findNavController
 import com.androidprojek.unifind.R
 import com.androidprojek.unifind.databinding.PenemuanPostFormBinding
+import com.androidprojek.unifind.viewmodel.NotificationMainViewModel // <-- PASTIKAN IMPORT INI ADA
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -26,6 +28,9 @@ class penemuan_post_form : Fragment() {
 
     private var _binding: PenemuanPostFormBinding? = null
     private val binding get() = _binding!!
+
+    // <-- LANGKAH 1: TAMBAHKAN BARIS INI UNTUK MENDAPATKAN VIEWMODEL
+    private val sharedViewModel: NotificationMainViewModel by activityViewModels()
 
     private var imageUri: Uri? = null
     private val calendar = Calendar.getInstance()
@@ -155,13 +160,15 @@ class penemuan_post_form : Fragment() {
             "lokasiPenemuan" to binding.edtLokasi.text.toString().trim(),
             "imageUrl" to imageUrl,
             "timestamp" to System.currentTimeMillis(),
-            // --- PASTIKAN BARIS INI ADA ---
             "status" to "Dalam Pencarian"
         )
 
         db.collection("form_penemuan")
             .add(postData)
             .addOnSuccessListener {
+                // <-- LANGKAH 2: TAMBAHKAN BARIS INI SETELAH SUKSES
+                sharedViewModel.addPostSuccessNotification()
+
                 Toast.makeText(context, "Postingan berhasil dibuat!", Toast.LENGTH_LONG).show()
                 findNavController().navigateUp()
             }

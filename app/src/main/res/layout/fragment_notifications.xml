@@ -1,341 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F9FCFB">
+    android:background="#F9FCFB"
+    android:orientation="vertical"
+    tools:context=".ui.notifications.NotificationsFragment">
 
-    <!-- Header -->
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Notifikasi"
-        android:gravity="center"
-        android:textSize="20sp"
-        android:textStyle="bold"
         android:fontFamily="@font/plusjakartasans_bold"
+        android:gravity="center"
         android:padding="16dp"
-        android:textColor="@android:color/black" />
+        android:text="Notifikasi"
+        android:textColor="@color/biru_tab"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
-    <!-- Scrollable notification list -->
-    <ScrollView
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <LinearLayout
-            android:orientation="vertical"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_notifications"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_notification" />
+
+        <TextView
+            android:id="@+id/tv_empty_notification"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="8dp">
+            android:layout_gravity="center"
+            android:text="Belum ada notifikasi yang muncul!"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="16sp"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
-            <!-- Notification Item 1 -->
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#F9FCFB"
-                android:padding="12dp"
-                android:layout_marginBottom="8dp"
-                android:backgroundTintMode="src_in"
-                android:elevation="2dp">
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/form"
-                    android:layout_marginEnd="12dp"
-                    android:background="@drawable/circle_bg"
-                    android:scaleType="centerCrop" />
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:text="Form Verifikasi Penemu kamu sudah berhasil terkirim! Cek progressnya di sini"
-                        android:textSize="14sp"
-                        android:textColor="@android:color/black"
-                        android:fontFamily="@font/plusjakartasans_regular"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:text="baru saja"
-                        android:textSize="12sp"
-                        android:textColor="#888888"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- Notification Item 2 -->
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#E9F7F6"
-                android:padding="12dp"
-                android:layout_marginBottom="8dp"
-                android:backgroundTintMode="src_in"
-                android:elevation="2dp">
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/jeki"
-                    android:layout_marginEnd="12dp"
-                    android:background="@drawable/circle_bg"
-                    android:scaleType="centerCrop" />
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:text="Form Klaim Barang kamu ditolak oleh Jeki"
-                        android:textSize="14sp"
-                        android:textColor="@android:color/black"
-                        android:fontFamily="@font/plusjakartasans_regular"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:text="1 menit yang lalu"
-                        android:textSize="12sp"
-                        android:textColor="#888888"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- Notification Item 3 -->
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#E9F7F6"
-                android:padding="12dp"
-                android:layout_marginBottom="8dp"
-                android:backgroundTintMode="src_in"
-                android:elevation="2dp">
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/enjun"
-                    android:layout_marginEnd="12dp"
-                    android:background="@drawable/circle_bg"
-                    android:scaleType="centerCrop"
-                    android:clipToOutline="true" />
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:text="Enjun mengisi Form Klaim Barang di postinganmu. Cek jawabannya di sini"
-                        android:textSize="14sp"
-                        android:textColor="@android:color/black"
-                        android:fontFamily="@font/plusjakartasans_regular"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:text="1 menit yang lalu"
-                        android:textSize="12sp"
-                        android:textColor="#888888"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- Notification Item 4 -->
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#E9F7F6"
-                android:padding="12dp"
-                android:layout_marginBottom="8dp"
-                android:backgroundTintMode="src_in"
-                android:elevation="2dp">
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/mamad"
-                    android:layout_marginEnd="12dp"
-                    android:background="@drawable/circle_bg"
-                    android:scaleType="centerCrop" />
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:text="Mamad mengisi Form Verifikasi Penemu di postinganmu. Cek jawabannya di sini"
-                        android:textSize="14sp"
-                        android:textColor="@android:color/black"
-                        android:fontFamily="@font/plusjakartasans_regular"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:text="3 jam yang lalu"
-                        android:textSize="12sp"
-                        android:textColor="#888888"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- Notification Item 4 -->
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#E9F7F6"
-                android:padding="12dp"
-                android:layout_marginBottom="8dp"
-                android:backgroundTintMode="src_in"
-                android:elevation="2dp">
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/mamad"
-                    android:layout_marginEnd="12dp"
-                    android:background="@drawable/circle_bg"
-                    android:scaleType="centerCrop" />
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:text="Mamad mengisi Form Klaim Barang di postinganmu. Cek jawabannya di sini"
-                        android:textSize="14sp"
-                        android:textColor="@android:color/black"
-                        android:fontFamily="@font/plusjakartasans_regular"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:text="3 jam yang lalu"
-                        android:textSize="12sp"
-                        android:textColor="#888888"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp" />
-                </LinearLayout>
-            </LinearLayout>
-
-
-            <!-- Notification Item 5 -->
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#F9FCFB"
-                android:padding="12dp"
-                android:layout_marginBottom="8dp"
-                android:backgroundTintMode="src_in"
-                android:elevation="2dp">
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/subang"
-                    android:layout_marginEnd="12dp"
-                    android:background="@drawable/circle_bg"
-                    android:scaleType="centerCrop"
-                    android:clipToOutline="true" />
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:text="Subang Taali mengisi Form Klaim Barang di postinganmu. Cek jawabannya di sini"
-                        android:textSize="14sp"
-                        android:textColor="@android:color/black"
-                        android:fontFamily="@font/plusjakartasans_regular"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:text="1 hari yang lalu"
-                        android:textSize="12sp"
-                        android:textColor="#888888"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- Notification Item 6 -->
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#F9FCFB"
-                android:padding="12dp"
-                android:layout_marginBottom="8dp"
-                android:backgroundTintMode="src_in"
-                android:elevation="2dp">
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/form"
-                    android:layout_marginEnd="12dp"
-                    android:background="@drawable/circle_bg"
-                    android:scaleType="centerCrop" />
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:text="Form Klaim Barang kamu sudah berhasil terkirim! Cek progressnya di sini"
-                        android:textSize="14sp"
-                        android:textColor="@android:color/black"
-                        android:fontFamily="@font/plusjakartasans_regular"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:text="1 hari yang lalu"
-                        android:textSize="12sp"
-                        android:textColor="#888888"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp" />
-                </LinearLayout>
-            </LinearLayout>
-
-        </LinearLayout>
-    </ScrollView>
+    </FrameLayout>
 
 </LinearLayout>
