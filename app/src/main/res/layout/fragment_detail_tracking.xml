@@ -1,14 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="24dp">
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:elevation="4dp"
+        android:paddingVertical="16dp"
+        android:paddingHorizontal="24dp">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/back_icon"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/back"
+            android:layout_marginStart="12dp"
+            android:text="Detail Pelacakan"
+            android:textSize="18sp"
+            android:textColor="#005B92"
+            android:fontFamily="@font/plusjakartasans_bold"
+            android:lineSpacingExtra="1sp"
+            android:layout_centerInParent="true"
+            android:gravity="center"/>
+
+    </RelativeLayout>
 
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="500dp"/>
+        android:layout_height="725dp"/>
 
 
     <TextView
@@ -18,4 +47,63 @@
         android:text="Loading..."
         android:textSize="18sp"
         android:textStyle="bold" />
-</FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="117dp"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="12dp"
+        android:elevation="4dp"
+        android:layout_below="@id/map">
+
+        <ImageView
+            android:id="@+id/item_image"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerVertical="true"
+            android:src="@android:drawable/ic_menu_gallery"
+            android:contentDescription="Gambar barang" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="16dp"
+            android:orientation="vertical">
+            
+            <TextView
+                android:id="@+id/item_namaBarang"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Item name"
+                android:lineSpacingExtra="21sp"
+                android:textSize="12sp"
+                android:textColor="#1F2B2D"
+                android:fontFamily="@font/plusjakartasans_bold"
+                android:gravity="center_vertical"/>
+            
+            <TextView
+                android:id="@+id/item_kategori"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Kategori Item"
+                android:textSize="8sp"
+                android:textColor="#1F2B2D"
+                android:fontFamily="@font/plusjakartasans_regular"
+                android:gravity="center_vertical"/>
+
+            <TextView
+                android:id="@+id/item_koordinat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Koordinat Item"
+                android:textSize="8sp"
+                android:textColor="#1F2B2D"
+                android:fontFamily="@font/plusjakartasans_regular"
+                android:gravity="center_vertical"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

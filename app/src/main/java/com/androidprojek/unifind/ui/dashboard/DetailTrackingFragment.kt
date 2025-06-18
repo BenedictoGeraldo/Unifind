@@ -5,15 +5,19 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.androidprojek.unifind.R
+import com.bumptech.glide.Glide
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.firebase.database.*
+import com.google.firebase.firestore.FirebaseFirestore
 
 class DetailTrackingFragment : Fragment(), OnMapReadyCallback {
 
@@ -21,6 +25,8 @@ class DetailTrackingFragment : Fragment(), OnMapReadyCallback {
     private lateinit var googleMap: GoogleMap
     private var currentMarker: Marker? = null
     private lateinit var database: DatabaseReference
+    private val db = FirebaseFirestore.getInstance()
+    private val currentUid = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.uid
 
     // Simulasi koordinat
 //    private val latitude = -6.200000
@@ -48,6 +54,46 @@ class DetailTrackingFragment : Fragment(), OnMapReadyCallback {
         // Inisialisasi map
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        val btnBack = view.findViewById<ImageView>(R.id.back)
+        btnBack.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+            // Atau bisa juga:
+            // findNavController().navigateUp()
+        }
+
+        val tvKategori = view.findViewById<TextView>(R.id.item_kategori)
+        val tvNama = view.findViewById<TextView>(R.id.item_namaBarang)
+        val imageView = view.findViewById<ImageView>(R.id.item_image)
+        val tvKoordinat = view.findViewById<TextView>(R.id.item_koordinat)
+
+        if (idPerangkat != null && currentUid != null) {
+            db.collection("trackings")
+                .whereEqualTo("userId", currentUid)
+                .whereEqualTo("idPerangkat", idPerangkat)
+                .get()
+                .addOnSuccessListener { documents ->
+                    if (!documents.isEmpty) {
+                        val doc = documents.first()
+                        val namaBarang = doc.getString("namaBarang")
+                        val kategoriBarang = doc.getString("kategoriBarang")
+                        val imageUrl = doc.getString("imageUrl")
+
+                        tvNama.text = namaBarang ?: "Tanpa Nama"
+                        tvKategori.text = kategoriBarang ?: "Tanpa Kategori"
+                        if (!imageUrl.isNullOrEmpty()) {
+                            Glide.with(this)
+                                .load(imageUrl)
+                                .into(imageView)
+                        }
+                    } else {
+                        Toast.makeText(requireContext(), "Data tidak ditemukan", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                .addOnFailureListener {
+                    Toast.makeText(requireContext(), "Gagal mengambil data: ${it.message}", Toast.LENGTH_SHORT).show()
+                }
+        }
 
         return view
     }
@@ -84,12 +130,17 @@ class DetailTrackingFragment : Fragment(), OnMapReadyCallback {
                         // Optional: animate camera
                         googleMap.animateCamera(CameraUpdateFactory.newLatLng(newLocation))
                     }
+
+                    val koordinatText = "(${lat}, ${lng})"
+                    view?.findViewById<TextView>(R.id.item_koordinat)?.text = koordinatText
+
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
                 // Handle error
                 Log.e("DEBUG_TRACKING", "Database read cancelled: ${error.message}")
+                Toast.makeText(requireContext(), "Gagal membaca data: ${error.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }
