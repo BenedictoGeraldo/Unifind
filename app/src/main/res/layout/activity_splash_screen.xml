@@ -1,42 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main"
+<androidx.media3.ui.PlayerView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/playerView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FCFCD4">
-
-    <RelativeLayout
-        android:id="@+id/logoBg"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/logo_bg"
-            android:layout_centerInParent="true"/>
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="252dp"
-        android:layout_height="252dp"
-        android:layout_centerInParent="true">
-
-        <ImageView
-            android:id="@+id/splash_logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/logo_u_biru"
-            android:layout_centerInParent="true" />
-
-        <ImageView
-            android:id="@+id/logoBg2"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:src="@drawable/rectangle_blue"
-            android:layout_alignParentBottom="true"/>
-
-    </RelativeLayout>
-
-</RelativeLayout>
+    android:background="#000000"
+    android:layout_gravity="center"
+    android:focusable="false"
+    android:clickable="false"
+    app:resize_mode="zoom"
+    app:use_controller="false" />

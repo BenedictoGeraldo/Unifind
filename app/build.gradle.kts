@@ -81,4 +81,7 @@ dependencies {
     implementation("com.google.android.gms:play-services-maps:18.1.0")
     // firebase realtime database
     implementation("com.google.firebase:firebase-database-ktx")
+    //exoplayer
+    implementation("androidx.media3:media3-exoplayer:1.3.1")
+    implementation("androidx.media3:media3-ui:1.3.1")
 }
