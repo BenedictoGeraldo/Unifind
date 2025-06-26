@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider // <-- PASTIKAN IMPORT INI ADA
@@ -46,6 +47,14 @@ class FormBarangActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityFormBarangBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val btnBack: ImageView = findViewById(R.id.btnBack)
+
+        // 2. Set OnClickListener untuk ImageView
+        btnBack.setOnClickListener {
+            // 3. Panggil finish() saat di-klik untuk menutup Activity ini dan kembali
+            finish()
+        }
 
         db = FirebaseFirestore.getInstance()
         storage = FirebaseStorage.getInstance()
